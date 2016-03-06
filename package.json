@@ -1,12 +1,20 @@
 {
 	"name": "tmlanguage",
 	"displayName": "TextMate Languages",
-	"description": "TextMate Languages",
+	"description": "Syntax highligher for JSON/YAML derivitives of TextMate language definition",
 	"version": "0.0.1",
 	"publisher": "Togusa09",
+    "license": "MIT",
 	"engines": {
 		"vscode": "^0.10.6"
 	},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Togusa09/vscode-tmlanguage/"
+    },
+    "bugs":{
+        "url": "https://github.com/Togusa09/vscode-tmlanguage/issues"  
+    },
 	"categories": [
 		"Languages"
 	],
