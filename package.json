@@ -3,7 +3,7 @@
 	"displayName": "TextMate Languages",
 	"description": "TextMate Languages",
 	"version": "0.0.1",
-	"publisher": "",
+	"publisher": "Togusa09",
 	"engines": {
 		"vscode": "^0.10.6"
 	},
