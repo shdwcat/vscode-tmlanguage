@@ -1,0 +1,37 @@
+{
+	"name": "tmlanguage",
+	"displayName": "TextMate Languages",
+	"description": "TextMate Languages",
+	"version": "0.0.1",
+	"publisher": "",
+	"engines": {
+		"vscode": "^0.10.6"
+	},
+	"categories": [
+		"Languages"
+	],
+	"contributes": {
+		"languages": [{
+			"id": "json-tmlanguage",
+			"aliases": ["Sublime Text Syntax Def (JSON)", "json-tmlanguage"],
+			"extensions": [".JSON-tmLanguage"],
+			"configuration": "./json-tmlanguage.configuration.json"
+		},
+        {
+			"id": "yaml-tmlanguage",
+			"aliases": ["Sublime Text Syntax Def (YAML)", "yaml-tmlanguage"],
+			"extensions": [".YAML-tmLanguage"],
+			"configuration": "./yaml-tmlanguage.configuration.yaml"
+		}],
+		"grammars": [{
+			"language": "json-tmlanguage",
+			"scopeName": "source.json-tmlanguage",
+			"path": "./syntaxes/json-tmlanguage.tmLanguage"
+		},
+        {
+			"language": "yaml-tmlanguage",
+			"scopeName": "source.yaml-tmlanguage",
+			"path": "./syntaxes/yaml-tmlanguage.tmLanguage"
+		}]
+	}
+}
