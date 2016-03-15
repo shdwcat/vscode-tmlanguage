@@ -47,5 +47,46 @@
         "body": [
             "\"comment\": \"${2:this is a comment}]"
         ]
+    },
+    "ecaptures" : {
+        "prefix" : "ecaptures",
+        "body" : [
+            "\"endCaptures\": { ",
+            "\t\"${1:0}\": { \"name\": \"${2:definition.string.quoted.double.untitled}\" }",
+            "}$0"
+        ]
+    },
+    "ftypes" : {
+        "prefix" : "ftypes",
+        "body" : "\"fileTypes\": [${1:\"f1\"}]$0"
+    },
+    "include" : {
+        "prefix" : "include",
+        "body" : ["{ \"include\": \"${1:#someElement}\" }$0"]
+    },
+    "key" : {
+        "prefix" : "key",
+        "body" : ["\"${1:name}\": \"${2:value}\""]
+    },
+    "match" : {
+        "prefix" : "match",
+        "body" : [
+            "{ \"name\": \"${1:keyword.control.untitled}\",",
+            "\t\"match\": \"${2:\\b(if|while|for|return)\\b}\"",
+            "}${3:,}"
+        ]
+    },
+    "patterns" : {
+        "prefix" : "match",
+        "body" : [
+            "\"patterns\": [$0",
+            "]"
+        ]
+    },
+    "repo" : {
+        "prefix" : "repo",
+        "body" : [
+            "\"repository\": {$0}"
+        ]   
     }
 }
