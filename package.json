@@ -2,7 +2,7 @@
 	"name": "tmlanguage",
 	"displayName": "TextMate Languages",
 	"description": "Syntax highligher for JSON/YAML derivitives of TextMate language definition",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "Togusa09",
     "license": "MIT",
 	"engines": {
@@ -24,22 +24,34 @@
 			"aliases": ["Sublime Text Syntax Def (JSON)", "json-tmlanguage"],
 			"extensions": [".JSON-tmLanguage"],
 			"configuration": "./json-tmlanguage.configuration.json"
-		},
-        {
+            },
+            {
 			"id": "yaml-tmlanguage",
 			"aliases": ["Sublime Text Syntax Def (YAML)", "yaml-tmlanguage"],
 			"extensions": [".YAML-tmLanguage"],
 			"configuration": "./yaml-tmlanguage.configuration.yaml"
 		}],
-		"grammars": [{
-			"language": "json-tmlanguage",
-			"scopeName": "source.json-tmlanguage",
-			"path": "./syntaxes/json-tmlanguage.tmLanguage"
-		},
-        {
-			"language": "yaml-tmlanguage",
-			"scopeName": "source.yaml-tmlanguage",
-			"path": "./syntaxes/yaml-tmlanguage.tmLanguage"
-		}]
+		"grammars": [
+            {
+                "language": "json-tmlanguage",
+                "scopeName": "source.json-tmlanguage",
+                "path": "./syntaxes/json-tmlanguage.tmLanguage"
+            },
+            {
+                "language": "yaml-tmlanguage",
+                "scopeName": "source.yaml-tmlanguage",
+                "path": "./syntaxes/yaml-tmlanguage.tmLanguage"
+		    }
+        ],
+        "snippets": [
+            {
+                "language": "json-tmlanguage",
+                "path": "./snippets/json-tmlanguage.json"
+            },
+            {
+                "language": "yaml-tmlanguage",
+                "path": "./snippets/yaml-tmlanguage.json"
+            }
+        ]
 	}
 }

@@ -1,9 +1,8 @@
 // [PackageDev] target_format: plist
-{ "name": "Sublime Text Syntax Def (JSON)",
-
-  "scopeName": "source.json-tmlanguage",
-
-  "fileTypes": ["JSON-tmLanguage"],
+{ 
+    "name": "Sublime Text Syntax Def (JSON)",
+    "scopeName": "source.json-tmlanguage",
+    "fileTypes": ["JSON-tmLanguage"],
 
   "patterns": [
     { "include": "#syntaxName" },

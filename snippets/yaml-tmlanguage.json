@@ -1,0 +1,11 @@
+{
+      "header": {
+        "prefix" : "header",
+        "body": [
+            "name: ${1:name}",
+            "scopeName: source.${2:scopeName}",
+            "fileTypes: [${3:fileType}]",
+            "$0"
+        ]
+    }
+}

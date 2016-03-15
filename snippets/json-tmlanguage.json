@@ -1,0 +1,51 @@
+{
+    // Snippets sourced from https://github.com/SublimeText/PackageDev/tree/3386ee4277c391a89d255dfac041d035a2c1a64b/Snippets/JSON%20Syntax%20Definitions
+    "header": {
+        "prefix" : "header",
+        "body": [
+            "\"name\": \"${1:name}\",",
+            "\"scopeName\": \"source.${2:scopeName}\",",
+            "\"fileTypes\": [\"${3:fileType}\"]",
+            "$0"
+        ]
+    },
+    "bcapture" : {
+        "prefix" : "bcapture",
+        "body" : [
+            "\"beginCaptures\": {",
+            "\t\"${1:0}\": {",
+		    "\t\"name\": \"${2:definition.string.quoted.double.untitled}\"",
+	        "\t}",
+            "}$0"
+        ]
+    },
+    "begin": {
+        "prefix": "begin",
+        "body" : [ "{", 
+                "\t\"name\": \"${1:string.quoted.double.untitled}\",",
+                "\t\"begin\": \"$2\",",
+                "\t\"end\": \"$3\"",
+                "}"
+        ]
+    },
+    "capture": {
+        "prefix" : "capture",
+        "body" : [ 
+            "\"${1:0}\": {\"name\": \"${2:definition.string.quoted.double.untitled}\"}$0"
+        ]
+    },
+    "captures" : {
+        "prefix" : "captures",
+        "body" : [
+            "\"captures\": {",
+            "\t\"${1:0}\": { \"name\": \"${2:definition.string.quoted.double.untitled}\" }",
+            "}$0"
+        ]
+    },
+    "comment" : {
+        "prefix" : "comment",
+        "body": [
+            "\"comment\": \"${2:this is a comment}]"
+        ]
+    }
+}
