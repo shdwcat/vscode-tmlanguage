@@ -1,4 +1,4 @@
-#TextMate/Sublime Language
+#TextMate/Sublime Language Definition for VSCode
 
 This package provides syntax highlighting for the SublimeText JSON/YAML tmlanguage files in VsCode. The syntax highlighting uses 
 tmLanguage files sourced from https://github.com/SublimeText/PackageDev.
