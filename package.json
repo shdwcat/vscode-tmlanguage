@@ -1,8 +1,8 @@
 {
 	"name": "tmlanguage",
 	"displayName": "TextMate Languages",
-	"description": "Syntax highligher for JSON/YAML derivitives of TextMate language definition",
-	"version": "0.0.2",
+	"description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
+	"version": "0.0.3",
 	"publisher": "Togusa09",
     "license": "MIT",
 	"engines": {
@@ -15,8 +15,9 @@
     "bugs":{
         "url": "https://github.com/Togusa09/vscode-tmlanguage/issues"  
     },
+    "icon": "images/plist_icon.png",
 	"categories": [
-		"Languages"
+		"Languages", "Snippets"
 	],
 	"contributes": {
 		"languages": [{

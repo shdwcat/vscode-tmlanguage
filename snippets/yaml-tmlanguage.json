@@ -7,5 +7,84 @@
             "fileTypes: [${3:fileType}]",
             "$0"
         ]
+    },
+    "bcapture" : {
+        "prefix" : "bcapture",
+        "body" : [
+            "beginCaptures: ",
+            "\t'${1:0}': { name: ${2:definition.string.quoted.double.untitled} }",
+            "}$0"
+        ]
+    },
+    "begin": {
+        "prefix": "begin",
+        "body" : [
+            "\t-name: ${1:string.quoted.double.untitled}",
+            "\tbegin: $2",
+            "\tend: $3",
+            "$0"
+        ]
+    },
+    "capture": {
+        "prefix" : "capture",
+        "body" : [ 
+            "'${1:0}': {name: ${2:definition.string.quoted.double.untitled}}$0"
+        ]
+    },
+    "captures" : {
+        "prefix" : "captures",
+        "body" : [
+            "captures: ",
+            "\t'${1:0}': { name: ${2:definition.string.quoted.double.untitled} }",
+            "$0"
+        ]
+    },
+    "comment" : {
+        "prefix" : "comment",
+        "body": [
+            "comment: ${2:this is a comment}"
+        ]
+    },
+    "ecaptures" : {
+        "prefix" : "ecaptures",
+        "body" : [
+            "endCaptures:  ",
+            "\t'${1:0}': { name: ${2:definition.string.quoted.double.untitled} }",
+            "$0"
+        ]
+    },
+    "ftypes" : {
+        "prefix" : "ftypes",
+        "body" : "fileTypes: [${1:f1}]$0"
+    },
+    "include" : {
+        "prefix" : "include",
+        "body" : [ "- include: ${1:#someElement} $0"]
+    },
+    "key" : {
+        "prefix" : "key",
+        "body" : [ "${1:name}: {2:value}"]
+    },
+    "match" : {
+        "prefix" : "match",
+        "body" : [
+            "- name: ${1:keyword.control.untitled},",
+            "\tmatch: ${2:\\b(if|while|for|return)\\b}",
+            "$3"
+        ]
+    },
+    "patterns" : {
+        "prefix" : "patterns",
+        "body" : [
+            "patterns: ",
+            "$0"
+        ]
+    },
+    "repo" : {
+        "prefix" : "repo",
+        "body" : [
+            "repository: ",
+            "\t$0:"
+        ]   
     }
 }

@@ -77,7 +77,7 @@
         ]
     },
     "patterns" : {
-        "prefix" : "match",
+        "prefix" : "patterns",
         "body" : [
             "\"patterns\": [$0",
             "]"
