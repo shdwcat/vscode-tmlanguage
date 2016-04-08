@@ -6,6 +6,8 @@ import * as vscode from 'vscode';
 import {join, basename} from 'path';
 
 var plist  = require("plist");
+var json = require('format-json');
+var YAML = require('yamljs');
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -16,105 +18,79 @@ export function activate(context: vscode.ExtensionContext) {
 
     let fileConverter = new FileConverter();
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    var convertFileCommand = vscode.commands.registerCommand('extension.convertFile', () => {
-        // The code you place here will be executed every time your command is executed
+    var convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
+        fileConverter.convertFileToJsonTml();
+    });
+    var convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
+        fileConverter.convertFileToYamlTml();
+    });
+    var convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
+        fileConverter.convertFileToTml();
+    });
+    var convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
+        fileConverter.convertFileToAuto();
+    });
+    
+    //let previewUri = vscode.Uri.parse('css-preview://authority/css-preview');
+    
+    // class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
+    //     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 
-        // Display a message box to the user
-        //window.showInformationMessage('Hello World!');
-        fileConverter.convertFile();
+    //     public provideTextDocumentContent(uri: vscode.Uri): string {
+
+    //         return JSON.stringify({ "TestProperty" : "test"});
+    //     }
         
-    });
+    //     get onDidChange(): vscode.Event<vscode.Uri> {
+    //         return this._onDidChange.event;
+    //     }
+
+    //     public update(uri: vscode.Uri) {
+    //         this._onDidChange.fire(uri);
+    //     }       
+    // }
     
-    let previewUri = vscode.Uri.parse('css-preview://authority/css-preview');
+    // let provider = new TextDocumentContentProvider();
+    // let registration = vscode.workspace.registerTextDocumentContentProvider('css-preview', provider);
+
+    // vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
+    //     if (e.document === vscode.window.activeTextEditor.document) {
+    //         provider.update(previewUri);
+    //     }
+    // });
+
+    // vscode.window.onDidChangeTextEditorSelection((e: vscode.TextEditorSelectionChangeEvent) => {
+    //     if (e.textEditor === vscode.window.activeTextEditor) {
+    //         provider.update(previewUri);
+    //     }
+    // })
+
+    // let disposable = vscode.commands.registerCommand('extension.showCssPropertyPreview', () => {
+    //     return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
+    //     }, (reason) => {
+    //         vscode.window.showErrorMessage(reason);
+    //     });
+    // });
     
-    class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-        private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
-
-        public provideTextDocumentContent(uri: vscode.Uri): string {
-            //return this.createCssSnippet();
-            return JSON.stringify({ "TestProperty" : "test"});
-        }
-        
-        get onDidChange(): vscode.Event<vscode.Uri> {
-            return this._onDidChange.event;
-        }
-
-        public update(uri: vscode.Uri) {
-            this._onDidChange.fire(uri);
-        }       
-    }
-    
-    let provider = new TextDocumentContentProvider();
-    let registration = vscode.workspace.registerTextDocumentContentProvider('css-preview', provider);
-
-    vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
-        if (e.document === vscode.window.activeTextEditor.document) {
-            provider.update(previewUri);
-        }
-    });
-
-    vscode.window.onDidChangeTextEditorSelection((e: vscode.TextEditorSelectionChangeEvent) => {
-        if (e.textEditor === vscode.window.activeTextEditor) {
-            provider.update(previewUri);
-        }
-    })
-
-    let disposable = vscode.commands.registerCommand('extension.showCssPropertyPreview', () => {
-        return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
-        }, (reason) => {
-            vscode.window.showErrorMessage(reason);
-        });
-
-    });
-    context.subscriptions.push(disposable, registration);
+    // context.subscriptions.push(disposable, registration);
     
     context.subscriptions.push(fileConverter);
-    context.subscriptions.push(convertFileCommand);
+    context.subscriptions.push(convertToJsonCommand);
+    context.subscriptions.push(convertToYamlCommand);
+    context.subscriptions.push(convertToTmlCommand);
+    context.subscriptions.push(convertToAutoCommand);
 }
 
 
 class FileConverter{
-    public convertFile()    {
-        // Get the current text editor
         let editor = vscode.window.activeTextEditor;
    
         if (!editor){
             return;
-        }
-        
         let doc = editor.document;
-     
-        var language = doc.languageId;
-        if (language === "xml")
-        {
-            var text = doc.getText();
-            var parsed = plist.parse(text);
-
-            try{
-                var json = require('format-json');
-                const path = join(vscode.workspace.rootPath, './newfile.JSON-tmlanguage');
-
-
-		        return vscode.workspace.openTextDocument( vscode.Uri.parse('untitled:' + path)).then(doc => {
-                    var t1 = doc.uri.scheme;
-                    var t2 = doc.isDirty;  
-                    
-                    return vscode.window.showTextDocument(doc)
-                    .then(editor => {
-                        return editor.edit(edit => {
-                            edit.insert(new vscode.Position(0, 0), json.plain(parsed));
-                        });
                     });
-                },
-                err => {
-                    var sdf = 3;
                 });
-            } catch(err)        {
                 var sdf = 3;
-            }
         }
     }
     

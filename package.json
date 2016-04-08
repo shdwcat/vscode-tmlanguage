@@ -25,13 +25,22 @@
         "onCommand:extension.showCssPropertyPreview"
     ],
 	"contributes": {
-        "commands": [{
-           "command" : "extension.convertFile",
-           "title": "Convert File" 
+        "commands": [
+        {
+           "command" : "extension.convertToJsonTml",
+           "title": "Convert to JSON-tmLanguage File" 
         },
         {
-                "command": "extension.showCssPropertyPreview",
-                "title": "Show CSS Properties Preview"
+           "command" : "extension.convertToYamlTml",
+           "title": "Convert to YAML-tmLanguage File" 
+        },
+        {
+           "command" : "extension.convertToTml",
+           "title": "Convert to tmLanguage File" 
+        },
+        {
+            "command" : "extension.convertTo",
+            "title": "Convert to... (auto)"
         }],
 		"languages": [{
             "id": "json-tmlanguage",
@@ -76,7 +85,8 @@
     },
     "dependencies": {
         "plist": "^1.2.0",
-        "format-json" : "^1.0.3"
+        "format-json" : "^1.0.3",
+        "yamljs": "^0.2.7"
     },
     "devDependencies": {
         "typescript": "^1.7.5",
