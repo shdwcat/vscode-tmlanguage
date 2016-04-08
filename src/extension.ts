@@ -81,15 +81,89 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(convertToAutoCommand);
 }
 
-
 class FileConverter{
+    public convertFileToJsonTml()    {
+        return this.ConvertFile( "json-tmlanguage");
+    }
+    
+    public convertFileToYamlTml(){
+        return this.ConvertFile( "yaml-tmlanguage");
+    }
+    
+    public convertFileToTml(){
+        return this.ConvertFile( "tmlanguage");
+    }
+    
+    public convertFileToAuto(){
+        return this.ConvertFile( "yaml-tmlanguage");
+    }
+    
+    private ConvertFile(destinationLanguage: string){
         let editor = vscode.window.activeTextEditor;
    
         if (!editor){
             return;
+        }        
         let doc = editor.document;
+        var filename = doc.fileName.split("\\").pop().split('.').shift();
+        
+        try{
+            var extension: string;
+            switch (destinationLanguage) {
+                case "json-tmlanguage":
+                    extension = "JSON-tmLanguage";
+                    break;
+                case "yaml-tmlanguage":
+                    extension = "YAML-tmLanguage";
+                    break;
+                case "tmlanguage":
+                    extension = "tmLanguage";
+                    break;
+                default:
+                    break;
+            }
+            var documentText = doc.getText();
+            
+            var sourceLanguage = doc.languageId;
+            const path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);
+
+            return vscode.workspace.openTextDocument( vscode.Uri.parse('untitled:' + path)).then(doc => {
+                return vscode.window.showTextDocument(doc)
+                .then(editor => {
+                    return editor.edit(edit => {
+                        var parsed: any;                      
+                        
+                        if (sourceLanguage === "xml" || sourceLanguage == "tmlanguage"){
+                            parsed = plist.parse(documentText);    
+                        }
+                        if (sourceLanguage === "json" || sourceLanguage == "json-tmlanguage"){
+                            parsed = JSON.parse(documentText);
+                        }
+                        if (sourceLanguage === "yaml" || sourceLanguage == "yaml-tmlanguage"){
+                            parsed = YAML.parse(documentText);
+                        }
+                        
+                        if (parsed === undefined || parsed === ""){
+                            // Display a message?
+                            return;
+                        }
+                        
+                        if (destinationLanguage === "json" || destinationLanguage === "json-tmlanguage"){
+                            edit.insert(new vscode.Position(0, 0), json.plain(parsed));    
+                        }
+                        if (destinationLanguage === "xml" || destinationLanguage === "tmlanguage"){
+                            edit.insert(new vscode.Position(0, 0), plist.build(parsed));
+                        }
+                        if (sourceLanguage === "yaml" || sourceLanguage == "yaml-tmlanguage"){
+                            edit.insert(new vscode.Position(0, 0), YAML.stringify(parsed))
+                        } 
                     });
                 });
+            },
+            err => {
+                var sdf = 3;
+            });
+        } catch(err)        {
                 var sdf = 3;
         }
     }
