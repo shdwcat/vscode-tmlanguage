@@ -22,6 +22,7 @@
     "main": "./out/src/extension",
     "activationEvents": [
         "onLanguage:xml",
+        "onLanguage:json-tmlanguage",
         "onCommand:extension.showCssPropertyPreview"
     ],
 	"contributes": {
@@ -86,7 +87,8 @@
     "dependencies": {
         "plist": "^1.2.0",
         "format-json" : "^1.0.3",
-        "yamljs": "^0.2.7"
+        "yamljs": "^0.2.7",
+        "jison": "^0.4.17"
     },
     "devDependencies": {
         "typescript": "^1.7.5",

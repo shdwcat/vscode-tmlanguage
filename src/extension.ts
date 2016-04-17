@@ -9,6 +9,13 @@ var plist  = require("plist");
 var json = require('format-json');
 var YAML = require('yamljs');
 
+//var jisonTest = require('./JisonTest.js');
+import * as jisonTest from './JisonTest';
+var Parser = require("jison").Parser;
+
+
+export const JSON_FILE: vscode.DocumentFilter = { language: 'json-tmlanguage', scheme: 'file' };
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -31,54 +38,44 @@ export function activate(context: vscode.ExtensionContext) {
         fileConverter.convertFileToAuto();
     });
     
-    //let previewUri = vscode.Uri.parse('css-preview://authority/css-preview');
-    
-    // class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-    //     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
-
-    //     public provideTextDocumentContent(uri: vscode.Uri): string {
-
-    //         return JSON.stringify({ "TestProperty" : "test"});
-    //     }
-        
-    //     get onDidChange(): vscode.Event<vscode.Uri> {
-    //         return this._onDidChange.event;
-    //     }
-
-    //     public update(uri: vscode.Uri) {
-    //         this._onDidChange.fire(uri);
-    //     }       
-    // }
-    
-    // let provider = new TextDocumentContentProvider();
-    // let registration = vscode.workspace.registerTextDocumentContentProvider('css-preview', provider);
-
-    // vscode.workspace.onDidChangeTextDocument((e: vscode.TextDocumentChangeEvent) => {
-    //     if (e.document === vscode.window.activeTextEditor.document) {
-    //         provider.update(previewUri);
-    //     }
-    // });
-
-    // vscode.window.onDidChangeTextEditorSelection((e: vscode.TextEditorSelectionChangeEvent) => {
-    //     if (e.textEditor === vscode.window.activeTextEditor) {
-    //         provider.update(previewUri);
-    //     }
-    // })
-
-    // let disposable = vscode.commands.registerCommand('extension.showCssPropertyPreview', () => {
-    //     return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two).then((success) => {
-    //     }, (reason) => {
-    //         vscode.window.showErrorMessage(reason);
-    //     });
-    // });
-    
-    // context.subscriptions.push(disposable, registration);
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(JSON_FILE, new JsonTmLanguageCompletionItemProvider(), '#'));
     
     context.subscriptions.push(fileConverter);
     context.subscriptions.push(convertToJsonCommand);
     context.subscriptions.push(convertToYamlCommand);
     context.subscriptions.push(convertToTmlCommand);
     context.subscriptions.push(convertToAutoCommand);
+}
+
+export class JsonTmLanguageCompletionItemProvider implements vscode.CompletionItemProvider{
+    public provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.CompletionItem[]> {      
+        return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
+            try{
+                var text = document.getText();
+                
+                var t = new jisonTest.JisonTest();
+                var grammar = t.grammar;
+                var parser = new Parser(grammar);
+                var docContent = parser.parse(text);
+                // Not as simple as parsing. Will need to look at lexical analysers again.
+                //var docContent = JSON.parse(text);
+                
+                var completion : vscode.CompletionItem[] = [];
+                
+                var options = Object.getOwnPropertyNames(docContent.repository).sort();
+                for(var option in options)                {
+                    var t3 = new vscode.CompletionItem(options[option]);
+                    t3.kind = vscode.CompletionItemKind.Keyword;
+                    t3.insertText = options[option];
+                    completion.push(t3);
+                }
+                return resolve(completion);
+            }
+            catch(err){
+                return reject();
+            }
+        });
+    }
 }
 
 class FileConverter{

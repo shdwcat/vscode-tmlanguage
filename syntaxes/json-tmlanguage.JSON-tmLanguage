@@ -17,7 +17,6 @@
   ],
 
   "repository": {
-
       "match": {
         "begin": "\"(match|begin|end)\"\\s*?:\\s*(\")",
         "end": "(\")",
