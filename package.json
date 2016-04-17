@@ -19,6 +19,9 @@
 	"categories": [
 		"Languages", "Snippets"
 	],
+    "keywords": [
+        "Languages", "tmLanguage", "JSON-tmLanguage", "YAML-tmLanguage", "TextMate"
+    ],
     "main": "./out/src/extension",
     "activationEvents": [
         "onLanguage:xml",
