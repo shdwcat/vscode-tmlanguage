@@ -12,6 +12,8 @@ var YAML = require('yamljs');
 //var jisonTest = require('./JisonTest.js');
 import * as jisonTest from './JisonTest';
 var Parser = require("jison").Parser;
+import JsonTmLanguageCompletionItemProvider from './JsonTmLanguageCompletionItemProvider';
+import jsonTmLanguageDiagnosticProvider from './jsonTmLanguageDiagnosticProvider'
 
 
 export const JSON_FILE: vscode.DocumentFilter = { language: 'json-tmlanguage', scheme: 'file' };
@@ -40,6 +42,11 @@ export function activate(context: vscode.ExtensionContext) {
     
     context.subscriptions.push(vscode.languages.registerCompletionItemProvider(JSON_FILE, new JsonTmLanguageCompletionItemProvider(), '#'));
     
+    let diagnosticProvider = new jsonTmLanguageDiagnosticProvider();
+    vscode.workspace.onDidChangeTextDocument(event => {
+        diagnosticProvider.CreateDiagnostics(event.document);
+    });
+    
     context.subscriptions.push(fileConverter);
     context.subscriptions.push(convertToJsonCommand);
     context.subscriptions.push(convertToYamlCommand);
@@ -47,36 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(convertToAutoCommand);
 }
 
-export class JsonTmLanguageCompletionItemProvider implements vscode.CompletionItemProvider{
-    public provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.CompletionItem[]> {      
-        return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
-            try{
-                var text = document.getText();
-                
-                var t = new jisonTest.JisonTest();
-                var grammar = t.grammar;
-                var parser = new Parser(grammar);
-                var docContent = parser.parse(text);
-                // Not as simple as parsing. Will need to look at lexical analysers again.
-                //var docContent = JSON.parse(text);
-                
-                var completion : vscode.CompletionItem[] = [];
-                
-                var options = Object.getOwnPropertyNames(docContent.repository).sort();
-                for(var option in options)                {
-                    var t3 = new vscode.CompletionItem(options[option]);
-                    t3.kind = vscode.CompletionItemKind.Keyword;
-                    t3.insertText = options[option];
-                    completion.push(t3);
-                }
-                return resolve(completion);
-            }
-            catch(err){
-                return reject();
-            }
-        });
-    }
-}
+
 
 class FileConverter{
     public convertFileToJsonTml()    {
