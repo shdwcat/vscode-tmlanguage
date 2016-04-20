@@ -19,12 +19,10 @@ export default class JsonTmLanguageCompletionItemProvider implements vscode.Comp
                 var grammar = t.grammar;
                 var parser = new Parser(grammar);
                 var docContent = parser.parse(text);
-                // Not as simple as parsing. Will need to look at lexical analysers again.
-                //var docContent = JSON.parse(text);
-                
+                     
                 var completion : vscode.CompletionItem[] = [];
                 
-                var options = Object.getOwnPropertyNames(docContent.repository).sort();
+                var options = Object.getOwnPropertyNames(docContent.value.repository.value).sort();
                 for(var option in options)                {
                     var t3 = new vscode.CompletionItem(options[option]);
                     t3.kind = vscode.CompletionItemKind.Keyword;

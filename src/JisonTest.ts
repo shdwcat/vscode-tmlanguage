@@ -46,15 +46,15 @@ export class JisonTest{
 
         "JSONText": [[ "JSONValue", "return $$ = $1;" ]],
 
-        "JSONValue": [[ "JSONNullLiteral",    "$$ = $1;" ],
-                      [ "JSONBooleanLiteral", "$$ = $1;" ],
-                      [ "JSONString",         "$$ = $1;" ],
-                      [ "JSONNumber",         "$$ = $1;" ],
+        "JSONValue": [[ "JSONNullLiteral",    "$$ = { 'value': $1, 'pos' : @1 };" ],
+                      [ "JSONBooleanLiteral", "$$ = { 'value': $1, 'pos' : @1 };" ],
+                      [ "JSONString",         "$$ = { 'value': $1, 'pos' : @1 };" ],
+                      [ "JSONNumber",         "$$ = { 'value': $1, 'pos' : @1 };" ],
                       [ "JSONObject",         "$$ = $1;" ],
-                      [ "JSONArray",          "$$ = $1;" ]],
+                      [ "JSONArray",          "$$ = { 'value': $1, 'pos' : @1  };" ]],
 
-        "JSONObject": [[ "{ }", "$$ = {};" ],
-                       [ "{ JSONMemberList }", "$$ = $2;" ]],
+        "JSONObject": [[ "{ }", "$$ = { };" ],
+                       [ "{ JSONMemberList }", "$$ = { 'value': $2, 'pos' : @1};" ]],
 
         "JSONMember": [[ "JSONString : JSONValue", "$$ = [$1, $3];" ]],
 
@@ -68,8 +68,7 @@ export class JisonTest{
                             [ "JSONElementList , JSONValue", "$$ = $1; $1.push($3);" ]]
     }
 };
-
-    
+   
 
     main : any = function main () {
         var options = {type: "slr", moduleType: "commonjs", moduleName: "jsoncheck"};
