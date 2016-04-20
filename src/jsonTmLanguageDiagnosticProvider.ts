@@ -1,21 +1,19 @@
 import * as vscode from 'vscode';
-import * as jisonTest from './JisonTest';
-var Parser = require("jison").Parser;
+//import * as jisonTest from './JisonTest';
+//var Parser = require("jison").Parser;
+
+import jsonTmLanguageAnalyser from './jsonTmLanguageAnalyser';
 
 export default class jsonTmLanguageDiagnosticProvider{
     public CreateDiagnostics(document : vscode.TextDocument){
         let diagnostics: vscode.Diagnostic[] = [];
         let uuidErrors = vscode.languages.createDiagnosticCollection("languageErrors");
-        let docToCheck = document.getText();
-        
-        var text = document.getText();
-        
-        var t = new jisonTest.JisonTest();
-        var grammar = t.grammar;
-        var parser = new Parser(grammar);
+
+        let analyser = new jsonTmLanguageAnalyser();
+       
         var guidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         try{
-            var docContent = parser.parse(text);    
+            let docContent = analyser.getAnalysis(document);
             // Need to determine a mapping back to the source text for each element        
             var t2 = this.searchElements(docContent, "uuid");
             for(var id of t2)            {

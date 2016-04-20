@@ -5,21 +5,15 @@ var plist  = require("plist");
 var json = require('format-json');
 var YAML = require('yamljs');
 
-//var jisonTest = require('./JisonTest.js');
-import * as jisonTest from './JisonTest';
-var Parser = require("jison").Parser;
+import jsonTmLanguageAnalyser from './jsonTmLanguageAnalyser';
 
 export default class JsonTmLanguageCompletionItemProvider implements vscode.CompletionItemProvider{
     public provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.CompletionItem[]> {      
         return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
             try{
-                var text = document.getText();
-                
-                var t = new jisonTest.JisonTest();
-                var grammar = t.grammar;
-                var parser = new Parser(grammar);
-                var docContent = parser.parse(text);
-                     
+                var analyser = new jsonTmLanguageAnalyser();
+                var docContent = analyser.getAnalysis(document);
+
                 var completion : vscode.CompletionItem[] = [];
                 
                 var options = Object.getOwnPropertyNames(docContent.value.repository.value).sort();
