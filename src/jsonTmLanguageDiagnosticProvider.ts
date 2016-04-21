@@ -1,7 +1,4 @@
 import * as vscode from 'vscode';
-//import * as jisonTest from './JisonTest';
-//var Parser = require("jison").Parser;
-
 import jsonTmLanguageAnalyser from './jsonTmLanguageAnalyser';
 
 export default class jsonTmLanguageDiagnosticProvider{
@@ -15,17 +12,36 @@ export default class jsonTmLanguageDiagnosticProvider{
         try{
             let docContent = analyser.getAnalysis(document);
             // Need to determine a mapping back to the source text for each element        
-            var t2 = this.searchElements(docContent, "uuid");
-            for(var id of t2)            {
+            //var guids = this.searchElements(docContent, "uuid");
+            var guids = analyser.getElements("uuid");
+            for(let id of guids)            {
                 if (typeof(id.value) === "string" ){
                     if (!guidRegex.test(id.value)){
-                        var lineRange = new vscode.Range(id.pos.first_line - 1, id.pos.first_column, id.pos.last_line - 1, id.pos.last_column);
+                        let lineRange = new vscode.Range(id.pos.first_line - 1, id.pos.first_column, id.pos.last_line - 1, id.pos.last_column);
                         diagnostics.push(new vscode.Diagnostic(lineRange, 'Invalid UUID/GUID', vscode.DiagnosticSeverity.Error));
                     }
                 }
-                
             }
-          
+            
+            var sectionNames = analyser.getSectionNames();            
+            //let includes = this.searchElements(docContent, "include");
+            let includes = analyser.getElements("include");
+            
+            for(let thing of includes){
+                if (typeof(thing.value) !== 'string') continue;
+               
+                var t : string = thing.value;
+                if (t.substr(0, 1) != '#') continue;
+                
+                var name = t.substring(1);
+                if (sectionNames.indexOf(name) === -1){
+                    let lineRange = new vscode.Range(thing.pos.first_line - 1, 
+                        thing.pos.first_column, 
+                        thing.pos.last_line - 1, 
+                        thing.pos.last_column);
+                    diagnostics.push(new vscode.Diagnostic(lineRange, 'Reference name was not found', vscode.DiagnosticSeverity.Error));
+                }
+            }
         }
         catch(err){
             if (err.hash != undefined && err.hash.loc != undefined){
@@ -35,7 +51,6 @@ export default class jsonTmLanguageDiagnosticProvider{
         }
         
         uuidErrors.set(document.uri, diagnostics);
-        
     }
     
     private searchElements(element: any, matchingTitle: string){
@@ -48,46 +63,10 @@ export default class jsonTmLanguageDiagnosticProvider{
             
             var result = this.searchElements(element.value[property], matchingTitle);
             if (result.length > 0){
-                matchingElements.push(result);
+                matchingElements = matchingElements.concat(result);
             }
         }
         
         return matchingElements;
-    }
-    
-    private searchTree(element : any, matchingTitle : string){
-        var matchingElements: any[] = [];
-        
-        if (element.value == matchingTitle){
-            matchingElements.push(element);
-        } else if(element.value != null){
-            //var result = null;
-            // for(var i : number = 0; result == null && i < element.value.children.length; i++){
-            //    var result = this.searchTree(element.value.children[i], matchingTitle);
-            //    matchingElements.push(result);
-            // }
-            for (var property in element.value){
-                var result = this.searchTree(element.value[property], matchingTitle);
-                if (result.length > 0)
-                {
-                    matchingElements.push(result);
-                }
-            }
-            //return matchingElements;
-        }
-        return matchingElements;
-        
-        
-        // if(element.value[matchingTitle] != undefined){
-        //     //return element;
-        //     matchingElements.push(element);
-        // } else if (element.value.children != null){
-        //     var result = null;
-        //     for(var i : number = 0; result == null && i < element.value.children.length; i++){
-        //         result = this.searchTree(element.value.children[i], matchingTitle);
-        //     }
-        //     return result;
-        // }
-        // return null;
     }
 }
