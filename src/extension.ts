@@ -129,8 +129,8 @@ class FileConverter{
                         if (destinationLanguage === "xml" || destinationLanguage === "tmlanguage"){
                             edit.insert(new vscode.Position(0, 0), plist.build(parsed));
                         }
-                        if (sourceLanguage === "yaml" || sourceLanguage == "yaml-tmlanguage"){
-                            edit.insert(new vscode.Position(0, 0), YAML.stringify(parsed))
+                        if (destinationLanguage === "yaml" || destinationLanguage == "yaml-tmlanguage"){
+                            edit.insert(new vscode.Position(0, 0), YAML.stringify(parsed, 6))
                         } 
                     });
                 });
