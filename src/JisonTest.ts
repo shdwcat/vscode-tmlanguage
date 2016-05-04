@@ -76,7 +76,3 @@ export class JisonTest{
         console.log(code);
     };
 };
-
-
-// if (require.main === module)
-//     exports.main();
