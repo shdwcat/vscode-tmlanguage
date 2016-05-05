@@ -112,16 +112,20 @@ class FileConverter{
             
             var sourceLanguage = doc.languageId;
             
-            //const search = join(vscode.workspace.rootPath, filename + "*." + extension);
-
             // check to see if file already exists
-            vscode.workspace.findFiles(filename + "*." + extension, "ABC").then(matchingFiles => {              
+            vscode.workspace.findFiles(filename + "*." + extension, "ABC").then(matchingFiles => {
+               var paths = matchingFiles.map(p => p.fsPath);
+                
+               var path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);              
                if (matchingFiles.length == 0){
-                   const path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);
                    this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);    
                } else {
-                   // Need to dynamically work out what to append. Highest number in brackets maybe?
-                   const path = join(vscode.workspace.rootPath, './' + filename + '(1).' + extension);
+                   var counter = 1;
+                   while (paths.indexOf(path) >= 0){
+                        path = join(vscode.workspace.rootPath, './' + filename + '(' + counter +').' + extension);
+                        counter++;
+                   }
+
                    this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);  
                }              
             });
