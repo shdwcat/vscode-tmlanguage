@@ -111,9 +111,28 @@ class FileConverter{
             var documentText = doc.getText();
             
             var sourceLanguage = doc.languageId;
-            const path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);
+            
+            //const search = join(vscode.workspace.rootPath, filename + "*." + extension);
 
-            return vscode.workspace.openTextDocument( vscode.Uri.parse('untitled:' + path)).then(doc => {
+            // check to see if file already exists
+            vscode.workspace.findFiles(filename + "*." + extension, "ABC").then(matchingFiles => {              
+               if (matchingFiles.length == 0){
+                   const path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);
+                   this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);    
+               } else {
+                   // Need to dynamically work out what to append. Highest number in brackets maybe?
+                   const path = join(vscode.workspace.rootPath, './' + filename + '(1).' + extension);
+                   this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);  
+               }              
+            });
+        } catch(err) {
+            console.log(err);
+            var sdf = 3;
+        }
+    }
+    
+    private OpenTextDocument(sourceLanguage: string, destinationLanguage:string, documentText: string, path: string){
+        return vscode.workspace.openTextDocument( vscode.Uri.parse('untitled:' + path)).then(doc => {
                 return vscode.window.showTextDocument(doc)
                 .then(editor => {
                     return editor.edit(edit => {
@@ -149,9 +168,6 @@ class FileConverter{
             err => {
                 var sdf = 3;
             });
-        } catch(err)        {
-                var sdf = 3;
-        }
     }
     
      dispose() {
