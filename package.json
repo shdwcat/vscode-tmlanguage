@@ -29,7 +29,7 @@
         "onLanguage:json", 
         "onLanguage:json-tmlanguage",
         "onLanguage:yaml-tmlanguage",
-        "onLanguage:tmlanguage",  
+        "onLanguage:tmlanguage"
     ],
 	"contributes": {
         "commands": [
