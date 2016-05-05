@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import {join, basename} from 'path';
 
-var plist  = require("plist");
+var plist  = require('plist');
 var json = require('format-json');
 var YAML = require('yamljs');
 
@@ -25,33 +25,44 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     //console.log('Congratulations, your extension "my-first-extension" is now active!');
 
-    let fileConverter = new FileConverter();
+    console.log("Loading tmLanguage extension");
+    try {
 
-    var convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
-        fileConverter.convertFileToJsonTml();
-    });
-    var convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
-        fileConverter.convertFileToYamlTml();
-    });
-    var convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
-        fileConverter.convertFileToTml();
-    });
-    var convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
-        fileConverter.convertFileToAuto();
-    });
-    
-    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(JSON_FILE, new JsonTmLanguageCompletionItemProvider(), '#'));
-    
-    let diagnosticProvider = new jsonTmLanguageDiagnosticProvider();
-    vscode.workspace.onDidChangeTextDocument(event => {
-        diagnosticProvider.CreateDiagnostics(event.document);
-    });
-    
-    context.subscriptions.push(fileConverter);
-    context.subscriptions.push(convertToJsonCommand);
-    context.subscriptions.push(convertToYamlCommand);
-    context.subscriptions.push(convertToTmlCommand);
-    context.subscriptions.push(convertToAutoCommand);
+        let fileConverter = new FileConverter();
+
+        var convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
+            fileConverter.convertFileToJsonTml();
+        });
+        context.subscriptions.push(convertToJsonCommand);
+        
+        var convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
+            fileConverter.convertFileToYamlTml();
+        });
+        context.subscriptions.push(convertToYamlCommand);
+        
+        var convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
+            fileConverter.convertFileToTml();
+        });
+        context.subscriptions.push(convertToTmlCommand);
+        
+        var convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
+            fileConverter.convertFileToAuto();
+        });
+        context.subscriptions.push(convertToAutoCommand);
+        context.subscriptions.push(fileConverter);
+        
+        context.subscriptions.push(vscode.languages.registerCompletionItemProvider(JSON_FILE, new JsonTmLanguageCompletionItemProvider(), '#'));
+        
+        let diagnosticProvider = new jsonTmLanguageDiagnosticProvider();
+        vscode.workspace.onDidChangeTextDocument(event => {
+            diagnosticProvider.CreateDiagnostics(event.document);
+        });
+        
+        console.log("tmLanguage extension loaded");
+
+    } catch(err) {
+        console.log("Failed to load tmLanguage extension due to " + err);
+    }
 }
 
 
