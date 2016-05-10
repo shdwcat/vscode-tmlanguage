@@ -13,7 +13,7 @@ var YAML = require('yamljs');
 import * as jisonTest from './JisonTest';
 var Parser = require("jison").Parser;
 import JsonTmLanguageCompletionItemProvider from './JsonTmLanguageCompletionItemProvider';
-import jsonTmLanguageDiagnosticProvider from './jsonTmLanguageDiagnosticProvider'
+import jsonTmLanguageDiagnosticProvider from './jsonTmLanguageDiagnosticProvider';
 
 
 export const JSON_FILE: vscode.DocumentFilter = { language: 'json-tmlanguage', scheme: 'file' };
@@ -95,6 +95,7 @@ class FileConverter{
         
         try{
             var extension: string;
+            // should do lower case compare
             switch (destinationLanguage) {
                 case "json-tmlanguage":
                     extension = "JSON-tmLanguage";
@@ -110,6 +111,12 @@ class FileConverter{
             }
             var documentText = doc.getText();
             
+            // Some of the sublime tmlanguage variant files had comments as hints for auto conversion
+            if (documentText.startsWith("//")){
+                var lastLineRange = doc.lineAt(doc.lineCount - 1).range;
+                documentText = doc.getText(new vscode.Range(new vscode.Position(1, 0), lastLineRange.end));
+            }
+                        
             var sourceLanguage = doc.languageId;
             
             // check to see if file already exists
@@ -117,21 +124,17 @@ class FileConverter{
                var paths = matchingFiles.map(p => p.fsPath);
                 
                var path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);              
-               if (matchingFiles.length == 0){
-                   this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);    
-               } else {
+               if (matchingFiles.length != 0){    
                    var counter = 1;
                    while (paths.indexOf(path) >= 0){
                         path = join(vscode.workspace.rootPath, './' + filename + '(' + counter +').' + extension);
                         counter++;
                    }
-
-                   this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);  
-               }              
+               }   
+               this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);           
             });
         } catch(err) {
             console.log(err);
-            var sdf = 3;
         }
     }
     
