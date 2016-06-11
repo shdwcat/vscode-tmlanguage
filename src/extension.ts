@@ -3,7 +3,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {join, basename} from 'path';
+import * as path from 'path';
 
 var plist  = require('plist');
 var json = require('format-json');
@@ -91,7 +91,7 @@ class FileConverter{
             return;
         }        
         let doc = editor.document;
-        var filename = doc.fileName.split("\\").pop().split('.').shift();
+        var parsedFilePath = path.parse(doc.fileName);
         
         try{
             var extension: string;
@@ -120,18 +120,18 @@ class FileConverter{
             var sourceLanguage = doc.languageId;
             
             // check to see if file already exists
-            vscode.workspace.findFiles(filename + "*." + extension, "ABC").then(matchingFiles => {
+            vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC").then(matchingFiles => {
                var paths = matchingFiles.map(p => p.fsPath);
                 
-               var path = join(vscode.workspace.rootPath, './' + filename + '.' + extension);              
+               var newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '.' + extension);              
                if (matchingFiles.length != 0){    
                    var counter = 1;
-                   while (paths.indexOf(path) >= 0){
-                        path = join(vscode.workspace.rootPath, './' + filename + '(' + counter +').' + extension);
+                   while (paths.indexOf(newFilePath) >= 0){
+                        newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '(' + counter +').' + extension);
                         counter++;
                    }
                }   
-               this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, path);           
+               this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, newFilePath);           
             });
         } catch(err) {
             console.log(err);
@@ -178,6 +178,6 @@ class FileConverter{
     }
     
      dispose() {
-        //this._statusBarItem.dispose();
+  
     }
 }
