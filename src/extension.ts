@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-var plist  = require('plist');
+var plist = require('plist');
 var json = require('format-json');
 var YAML = require('yamljs');
 
