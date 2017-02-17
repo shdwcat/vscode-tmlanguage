@@ -71,7 +71,17 @@
                 "language": "yaml-tmlanguage",
                 "scopeName": "source.yaml-tmlanguage",
                 "path": "./syntaxes/yaml-tmlanguage.tmLanguage"
-		    }
+            },
+            {
+                "scopeName": "source.escapedregexp",
+                "path": "./syntaxes/Regular Expression (Escaped).tmLanguage",
+                "injectTo": ["source.json-tmlanguage"]
+            },
+            {
+                "scopeName": "source.oniregexp",
+                "path": "./syntaxes/Oniguruma Regular Expression.tmLanguage",
+                "injectTo": ["source.yaml-tmlanguage"]
+            }
         ],
         "snippets": [
             {
