@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     //console.log('Congratulations, your extension "my-first-extension" is now active!');
 
- Break the build etc etc
+ Break the build etc etc 2
 
     console.log("Loading tmLanguage extension");
     try {
