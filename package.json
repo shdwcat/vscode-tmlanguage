@@ -1,67 +1,85 @@
 {
-	"name": "tmlanguage",
-	"displayName": "TextMate Languages",
-	"description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
-	"version": "0.8.0",
-	"publisher": "Togusa09",
+    "name": "tmlanguage",
+    "displayName": "TextMate Languages",
+    "description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
+    "version": "0.8.0",
+    "publisher": "Togusa09",
     "license": "MIT",
-	"engines": {
-		"vscode": "^1.9.0"
-	},
+    "engines": {
+        "vscode": "^1.15.1"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/Togusa09/vscode-tmlanguage/"
     },
-    "bugs":{
-        "url": "https://github.com/Togusa09/vscode-tmlanguage/issues"  
+    "bugs": {
+        "url": "https://github.com/Togusa09/vscode-tmlanguage/issues"
     },
     "icon": "images/plist_icon.png",
-	"categories": [
-		"Languages", "Snippets"
-	],
+    "categories": [
+        "Languages",
+        "Snippets"
+    ],
     "keywords": [
-        "Languages", "tmLanguage", "JSON-tmLanguage", "YAML-tmLanguage", "TextMate"
+        "Languages",
+        "tmLanguage",
+        "JSON-tmLanguage",
+        "YAML-tmLanguage",
+        "TextMate"
     ],
     "main": "./out/src/extension",
     "activationEvents": [
         "onLanguage:xml",
         "onLanguage:yaml",
-        "onLanguage:json", 
+        "onLanguage:json",
         "onLanguage:json-tmlanguage",
         "onLanguage:yaml-tmlanguage",
         "onLanguage:tmlanguage"
     ],
-	"contributes": {
+    "contributes": {
         "commands": [
-        {
-           "command" : "extension.convertToJsonTml",
-           "title": "Convert to JSON-tmLanguage File" 
-        },
-        {
-           "command" : "extension.convertToYamlTml",
-           "title": "Convert to YAML-tmLanguage File" 
-        },
-        {
-           "command" : "extension.convertToTml",
-           "title": "Convert to tmLanguage File" 
-        },
-        {
-            "command" : "extension.convertTo",
-            "title": "Convert to... (auto)"
-        }],
-		"languages": [{
-            "id": "json-tmlanguage",
-            "aliases": ["Sublime Text Syntax Def (JSON)", "json-tmlanguage"],
-            "extensions": [".JSON-tmLanguage"],
-            "configuration": "./json-tmlanguage.configuration.json"
-        },
-        {
-			"id": "yaml-tmlanguage",
-			"aliases": ["Sublime Text Syntax Def (YAML)", "yaml-tmlanguage"],
-			"extensions": [".YAML-tmLanguage"],
-			"configuration": "./yaml-tmlanguage.configuration.json"
-		}],
-		"grammars": [
+            {
+                "command": "extension.convertToJsonTml",
+                "title": "Convert to JSON-tmLanguage File"
+            },
+            {
+                "command": "extension.convertToYamlTml",
+                "title": "Convert to YAML-tmLanguage File"
+            },
+            {
+                "command": "extension.convertToTml",
+                "title": "Convert to tmLanguage File"
+            },
+            {
+                "command": "extension.convertTo",
+                "title": "Convert to... (auto)"
+            }
+        ],
+        "languages": [
+            {
+                "id": "json-tmlanguage",
+                "aliases": [
+                    "Sublime Text Syntax Def (JSON)",
+                    "json-tmlanguage"
+                ],
+                "extensions": [
+                    ".JSON-tmLanguage"
+                ],
+                "configuration": "./json-tmlanguage.configuration.json"
+            },
+            {
+                "id": "yaml-tmlanguage",
+                "aliases": [
+                    "Sublime Text Syntax Def (YAML)",
+                    "yaml-tmlanguage"
+                ],
+                "extensions": [
+                    ".YAML-tmLanguage"
+                ],
+                "configuration": "./yaml-tmlanguage.configuration.json"
+            }
+        ],
+        "grammars": [
             {
                 "language": "json-tmlanguage",
                 "scopeName": "source.json-tmlanguage",
@@ -93,25 +111,23 @@
                 "path": "./snippets/yaml-tmlanguage.json"
             }
         ]
-	},
+    },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
         "compile": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install"
-
     },
     "dependencies": {
+        "format-json": "^1.0.3",
+        "jison": "^0.4.17",
         "plist": "^1.2.0",
-        "format-json" : "^1.0.3",
-        "yamljs": "^0.2.7",
-        "jison": "^0.4.17"
+        "yamljs": "^0.2.10"
     },
     "devDependencies": {
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^6.0.87",
+        "mocha": "^2.5.3",
         "typescript": "^2.1.6",
-        "vscode": "^1.0.3",
-        "mocha": "^2.3.3",
-        "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
-
+        "vscode": "^1.0.3"
     }
 }
