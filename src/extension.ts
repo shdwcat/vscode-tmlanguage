@@ -120,8 +120,12 @@ class FileConverter{
             var sourceLanguage = doc.languageId;
             
             // check to see if file already exists
-            vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC").then(matchingFiles => {
+            vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC")
+                .then(matchingFiles => {
                var paths = matchingFiles.map(p => p.fsPath);
+
+               var editorWindows = vscode.window.visibleTextEditors.map(x => x.document.fileName);
+               paths = paths.concat(editorWindows);
                 
                var newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '.' + extension);              
                if (matchingFiles.length != 0){    
@@ -130,7 +134,8 @@ class FileConverter{
                         newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '(' + counter +').' + extension);
                         counter++;
                    }
-               }   
+               }
+
                this.OpenTextDocument(sourceLanguage, destinationLanguage, documentText, newFilePath);           
             });
         } catch(err) {
