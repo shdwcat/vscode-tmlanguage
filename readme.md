@@ -1,4 +1,4 @@
-#TextMate/Sublime Language Definition for VSCode
+# TextMate/Sublime Language Definition for VSCode
 
 This package provides syntax highlighting for the SublimeText JSON/YAML tmlanguage files in VsCode. The syntax highlighting uses 
 tmLanguage files sourced from https://github.com/SublimeText/PackageDev. Coffee script language information is sourced from https://github.com/aponxi/sublime-better-coffeescript/blob/master/CoffeeScript.tmLanguage
@@ -9,15 +9,15 @@ tmLanguage files sourced from https://github.com/SublimeText/PackageDev. Coffee 
 The functionality in this extension is inspired by SublimeText PackageDev, and the lack functionality around tmLanguage files, even though
 it's a recommended format for VSCODE syntax highlighting.
 
-##Currently Included
+## Currently Included
 
-###Syntax Highlighting and Snippets for JSON-tmLanguage files
+### Syntax Highlighting and Snippets for JSON-tmLanguage files
 ![JSON-tmLanguage](/images/json_sample.png)
 
-###Syntax Highlighting and Snippets for YAML-tmLanguage files
+### Syntax Highlighting and Snippets for YAML-tmLanguage files
 ![YAML-tmLanguage](/images/yaml_sample.png)
 
-###Conversion between tmLanguage file variants
+### Conversion between tmLanguage file variants
 ![Available Commands](/images/commands_sample.png)
 
 Included commands are:
