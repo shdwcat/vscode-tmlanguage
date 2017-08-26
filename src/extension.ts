@@ -1,51 +1,45 @@
 'use strict';
 
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-var plist = require('plist');
-var json = require('format-json');
-var YAML = require('yamljs');
+import * as plist from 'plist';
+import * json from 'format-json';
+import * YAML from 'yamljs';
 
-//var jisonTest = require('./JisonTest.js');
 import * as jisonTest from './JisonTest';
-var Parser = require("jison").Parser;
+
+import { Parser } from 'jison';
+
 import JsonTmLanguageCompletionItemProvider from './JsonTmLanguageCompletionItemProvider';
 import jsonTmLanguageDiagnosticProvider from './jsonTmLanguageDiagnosticProvider';
 
 
 export const JSON_FILE: vscode.DocumentFilter = { language: 'json-tmlanguage', scheme: 'file' };
+type SupportedLanguage = "xml" | "tmlanguage" | "json" | "json-tmlanguage" | "yaml" | "yaml-tmlanguage";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    //console.log('Congratulations, your extension "my-first-extension" is now active!');
-
     console.log("Loading tmLanguage extension");
     try {
 
-        let fileConverter = new FileConverter();
+        const fileConverter: FileConverter = new FileConverter();
 
-        var convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
+        const convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
             fileConverter.convertFileToJsonTml();
         });
         context.subscriptions.push(convertToJsonCommand);
         
-        var convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
+        const convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
             fileConverter.convertFileToYamlTml();
         });
         context.subscriptions.push(convertToYamlCommand);
         
-        var convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
+        const convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
             fileConverter.convertFileToTml();
         });
         context.subscriptions.push(convertToTmlCommand);
         
-        var convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
+        const convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
             fileConverter.convertFileToAuto();
         });
         context.subscriptions.push(convertToAutoCommand);
@@ -65,8 +59,6 @@ export function activate(context: vscode.ExtensionContext) {
     }
 }
 
-
-
 class FileConverter{
     public convertFileToJsonTml()    {
         return this.ConvertFile( "json-tmlanguage");
@@ -83,6 +75,23 @@ class FileConverter{
     public convertFileToAuto(){
         return this.ConvertFile( "yaml-tmlanguage");
     }
+
+    public dispose(): void {
+        // nothing to do
+    }
+
+    private fileExtensionFor(destinationLanguage: string): string {
+        switch (destinationLanguage.toLowerCase()) {
+            case "json-tmlanguage":
+                return "JSON-tmLanguage";
+            case "yaml-tmlanguage":
+                return "YAML-tmLanguage";
+            case "tmlanguage":
+                return "tmLanguage";
+            default:
+                return undefined;
+        }
+    }
     
     private ConvertFile(destinationLanguage: string){
         let editor = vscode.window.activeTextEditor;
@@ -90,26 +99,26 @@ class FileConverter{
         if (!editor){
             return;
         }        
+
+        const extension: string = this.fileExtensionFor(destinationLanguage);
+
         let doc = editor.document;
         var parsedFilePath = path.parse(doc.fileName);
         
+        if (!extension) {
+            console.log(`Unable to map destination language (${destinationLanguage}) to file extension`);
+            vscode.window.showErrorMessage(`Unable to map destination language (${destinationLanguage}) to file extension`);
+            return;
+        }
+
         try{
-            var extension: string;
-            // should do lower case compare
-            switch (destinationLanguage) {
-                case "json-tmlanguage":
-                    extension = "JSON-tmLanguage";
-                    break;
-                case "yaml-tmlanguage":
-                    extension = "YAML-tmLanguage";
-                    break;
-                case "tmlanguage":
-                    extension = "tmLanguage";
-                    break;
-                default:
-                    break;
-            }
-            var documentText = doc.getText();
+            const destLanguage: SupportedLanguage = destinationLanguage as SupportedLanguage;
+            const doc: vscode.TextDocument = editor.document;
+            const parsedFilePath: path.ParsedPath = path.parse(doc.fileName);
+
+            let documentText: string = doc.getText();
+
+            console.log(`Converting to ${extension}`);
             
             // Some of the sublime tmlanguage variant files had comments as hints for auto conversion
             if (documentText.startsWith("//")){
@@ -117,7 +126,7 @@ class FileConverter{
                 documentText = doc.getText(new vscode.Range(new vscode.Position(1, 0), lastLineRange.end));
             }
                         
-            var sourceLanguage = doc.languageId;
+            const sourceLanguage: SupportedLanguage = doc.languageId as SupportedLanguage;
             
             // check to see if file already exists
             vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC")
@@ -142,9 +151,43 @@ class FileConverter{
             console.log(err);
         }
     }
+
+    private parse(sourceLanguage: SupportedLanguage, documentText: string): any {
+        switch (sourceLanguage) {
+            case "xml":
+            case "tmlanguage":
+                return plist.parse(documentText);
+            case "json":
+            case "json-tmlanguage":
+                return JSON.parse(documentText);
+            case "yaml":
+            case "yaml-tmlanguage":
+                return YAML.parse(documentText);
+            default:
+                return undefined;
+        }
+    }
+
+    private build(destinationLanguage: SupportedLanguage, parsed: any): string {
+        switch (destinationLanguage) {
+            case "xml":
+            case "tmlanguage":
+                return plist.build(parsed);
+            case "json":
+            case "json-tmlanguage":
+                return json.plain(parsed);
+            case "yaml":
+            case "yaml-tmlanguage":
+                return YAML.stringify(parsed, 6);
+            default:
+                return undefined;
+        }
+    }
     
     private OpenTextDocument(sourceLanguage: string, destinationLanguage:string, documentText: string, path: string){
-        return vscode.workspace.openTextDocument( vscode.Uri.parse('untitled:' + path)).then(doc => {
+        const uri: vscode.Uri = vscode.Uri.parse('untitled:' + path);
+
+        return vscode.workspace.openTextDocument(uri).then(doc => {
                 return vscode.window.showTextDocument(doc)
                 .then(editor => {
                     return editor.edit(edit => {
@@ -180,9 +223,5 @@ class FileConverter{
             err => {
                 var sdf = 3;
             });
-    }
-    
-     dispose() {
-  
     }
 }
