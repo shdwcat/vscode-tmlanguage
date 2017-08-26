@@ -150,19 +150,19 @@ class FileConverter{
                     return editor.edit(edit => {
                         var parsed: any;                      
                         
-                        if (sourceLanguage === "xml" || sourceLanguage == "tmlanguage"){
-                            parsed = plist.parse(documentText);    
-                        }
-                        if (sourceLanguage === "json" || sourceLanguage == "json-tmlanguage"){
-                            parsed = JSON.parse(documentText);
-                        }
-                        if (sourceLanguage === "yaml" || sourceLanguage == "yaml-tmlanguage"){
-                            parsed = YAML.parse(documentText);
-                        }
-                        
-                        if (parsed === undefined || parsed === ""){
-                            // Display a message?
-                            return;
+                        try {
+                            if (sourceLanguage === "xml" || sourceLanguage == "tmlanguage"){
+                                parsed = plist.parse(documentText);    
+                            }
+                            if (sourceLanguage === "json" || sourceLanguage == "json-tmlanguage"){
+                                parsed = JSON.parse(documentText);
+                            }
+                            if (sourceLanguage === "yaml" || sourceLanguage == "yaml-tmlanguage"){
+                                parsed = YAML.parse(documentText);
+                            }
+                        } catch(err) {
+                            console.log(err);
+                            vscode.window.showErrorMessage(err.toString());
                         }
                         
                         if (destinationLanguage === "json" || destinationLanguage === "json-tmlanguage"){
