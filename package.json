@@ -93,12 +93,16 @@
             {
                 "scopeName": "source.escapedregexp",
                 "path": "./syntaxes/Regular Expression (Escaped).tmLanguage",
-                "injectTo": ["source.json-tmlanguage"]
+                "injectTo": [
+                    "source.json-tmlanguage"
+                ]
             },
             {
                 "scopeName": "source.oniregexp",
                 "path": "./syntaxes/Oniguruma Regular Expression.tmLanguage",
-                "injectTo": ["source.yaml-tmlanguage"]
+                "injectTo": [
+                    "source.yaml-tmlanguage"
+                ]
             }
         ],
         "snippets": [
