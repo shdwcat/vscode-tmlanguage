@@ -31,7 +31,6 @@ export class JisonTest{
 
     "tokens": "STRING NUMBER { } [ ] , : TRUE FALSE NULL",
     "start": "JSONText",
-
     
     "bnf": {
         "JSONString": [[ "STRING", "$$ = yytext;" ]],
@@ -69,7 +68,6 @@ export class JisonTest{
     }
 };
    
-
     main : any = function main () {
         var options = {type: "slr", moduleType: "commonjs", moduleName: "jsoncheck"};
         var code = new Generator(exports.grammar, options).generate();

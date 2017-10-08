@@ -1,9 +1,5 @@
 import * as vscode from 'vscode';
-import {join, basename} from 'path';
-
-var plist  = require("plist");
-var json = require('format-json');
-var YAML = require('yamljs');
+import { join, basename } from 'path';
 
 import jsonTmLanguageAnalyser from './jsonTmLanguageAnalyser';
 

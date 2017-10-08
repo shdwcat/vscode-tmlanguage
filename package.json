@@ -37,6 +37,17 @@
         "onLanguage:tmlanguage"
     ],
     "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "tmLanguage library configuration",
+            "properties": {
+                "tmLanguage.replaceExistingFile": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Whether the the conversion should overwrite existing files or create a new one"
+            }
+        }
+        },
         "commands": [
             {
                 "command": "extension.convertToJsonTml",
@@ -135,3 +146,4 @@
         "vscode": "^1.0.3"
     }
 }
+

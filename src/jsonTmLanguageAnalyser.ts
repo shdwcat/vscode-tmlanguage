@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as jisonTest from './JisonTest';
-var Parser = require("jison").Parser;
+import { JisonTest } from './JisonTest';
+import { Parser } from 'jison';
 
 export default class jsonTmLanguageAnalyser{
     private _docContent : any;
@@ -8,7 +8,7 @@ export default class jsonTmLanguageAnalyser{
     public getAnalysis(document : vscode.TextDocument){
         let docToCheck = document.getText();
         
-        var t = new jisonTest.JisonTest();
+        var t = new JisonTest();
         var grammar = t.grammar;
         var parser = new Parser(grammar);
         this._docContent = parser.parse(docToCheck);

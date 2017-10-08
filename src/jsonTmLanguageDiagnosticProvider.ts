@@ -24,7 +24,6 @@ export default class jsonTmLanguageDiagnosticProvider{
             }
             
             var sectionNames = analyser.getSectionNames();            
-            //let includes = this.searchElements(docContent, "include");
             let includes = analyser.getElements("include");
             
             for(let thing of includes){
