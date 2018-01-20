@@ -88,6 +88,15 @@
           ".YAML-tmLanguage"
         ],
         "configuration": "./yaml-tmlanguage.configuration.json"
+      },
+      {
+        "id": "tmlanguage",
+        "aliases": [
+          "tmlanguage"
+        ],
+        "extensions": [
+          ".tmLanguage"
+        ]
       }
     ],
     "grammars": [

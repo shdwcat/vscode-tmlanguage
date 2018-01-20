@@ -94,7 +94,7 @@ export class FileConverter{
         }
     }
 
-    private createFileReplacingExisting(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: string, destinationLanguage: string, documentText: string) : void
+    private createFileReplacingExisting(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string) : void
     {
         const newFilePath: string = path.join(parsedFilePath.dir, "./" + parsedFilePath.name + "." + extension);
         this.ifExists(newFilePath).then((existed: boolean) => {
@@ -106,7 +106,7 @@ export class FileConverter{
         });
     }
 
-    private createFileWithUniqueName(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: string, destinationLanguage: string, documentText: string) : void{
+    private createFileWithUniqueName(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string) : void{
         // check to see if file already exists
         vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC")
         .then(matchingFiles => {
@@ -180,8 +180,9 @@ private uriFor(filePath: string, existing: boolean): vscode.Uri {
     return vscode.Uri.parse("untitled:" + filePath);
 }
 
-private openEditor(sourceLanguage: string, destinationLanguage:string, documentText: string, path: string, exists: boolean){
+private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string, documentText: string, path: string, exists: boolean){
     const uri: vscode.Uri = this.uriFor(path, exists);
+    var srcLanguage = sourceLanguage;
 
     return vscode.workspace.openTextDocument(uri)
     .then((doc: vscode.TextDocument) => {
@@ -190,8 +191,8 @@ private openEditor(sourceLanguage: string, destinationLanguage:string, documentT
                 return editor.edit((edit: vscode.TextEditorEdit) => {
                     var parsed: string;                      
 
-                    const sourceLanguage: SupportedLanguage = doc.languageId as SupportedLanguage;
-                    parsed = this.parse(sourceLanguage, documentText);
+                    //const sourceLang: SupportedLanguage = doc.languageId as SupportedLanguage;
+                    parsed = this.parse(srcLanguage, documentText);
                     
                     if (!parsed){
                         // Display a message?
