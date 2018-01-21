@@ -174,7 +174,7 @@ private build(destinationLanguage: SupportedLanguage, parsed: any): string {
 
 private uriFor(filePath: string, existing: boolean): vscode.Uri {
     if (existing) {
-        return vscode.Uri.parse("file:///" + filePath);
+        return vscode.Uri.file(filePath);
     }
 
     return vscode.Uri.parse("untitled:" + filePath);
@@ -182,7 +182,6 @@ private uriFor(filePath: string, existing: boolean): vscode.Uri {
 
 private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string, documentText: string, path: string, exists: boolean){
     const uri: vscode.Uri = this.uriFor(path, exists);
-    var srcLanguage = sourceLanguage;
 
     return vscode.workspace.openTextDocument(uri)
     .then((doc: vscode.TextDocument) => {
@@ -191,8 +190,8 @@ private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string
                 return editor.edit((edit: vscode.TextEditorEdit) => {
                     var parsed: string;                      
 
-                    parsed = this.parse(srcLanguage, documentText);
-                    
+                    parsed = this.parse(sourceLanguage, documentText);
+
                     if (!parsed){
                         // Display a message?
                         console.log("Could not parse source");
