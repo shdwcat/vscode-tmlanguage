@@ -191,7 +191,6 @@ private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string
                 return editor.edit((edit: vscode.TextEditorEdit) => {
                     var parsed: string;                      
 
-                    //const sourceLang: SupportedLanguage = doc.languageId as SupportedLanguage;
                     parsed = this.parse(srcLanguage, documentText);
                     
                     if (!parsed){
