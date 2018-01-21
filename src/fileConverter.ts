@@ -191,7 +191,7 @@ private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string
                     var parsed: string;                      
 
                     parsed = this.parse(sourceLanguage, documentText);
-                    
+
                     if (!parsed){
                         // Display a message?
                         console.log("Could not parse source");
