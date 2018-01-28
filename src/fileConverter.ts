@@ -13,19 +13,19 @@ export interface IConfig {
 }
 
 export class FileConverter{
-    public convertFileToJsonTml()    {
+    public convertFileToJsonTml() : Thenable<boolean>   {
         return this.ConvertFile( "json-tmlanguage");
     }
     
-    public convertFileToYamlTml(){
+    public convertFileToYamlTml() : Thenable<boolean>{
         return this.ConvertFile( "yaml-tmlanguage");
     }
     
-    public convertFileToTml(){
+    public convertFileToTml() : Thenable<boolean>{
         return this.ConvertFile( "tmlanguage");
     }
     
-    public convertFileToAuto(){
+    public convertFileToAuto() : Thenable<boolean>{
         return this.ConvertFile( "yaml-tmlanguage");
     }
 
@@ -33,7 +33,7 @@ export class FileConverter{
         // nothing to do
     }
 
-    private fileExtensionFor(destinationLanguage: string): string {
+    private fileExtensionFor(destinationLanguage: string) : string {
         switch (destinationLanguage.toLowerCase()) {
             case "json-tmlanguage":
                 return "JSON-tmLanguage";
@@ -46,7 +46,7 @@ export class FileConverter{
         }
     }
     
-    private ConvertFile(destinationLanguage: string){
+    private ConvertFile(destinationLanguage: string) : Thenable<boolean>{
         let editor : vscode.TextEditor = vscode.window.activeTextEditor;
    
         if (!editor){
@@ -84,9 +84,9 @@ export class FileConverter{
             const cfg = vscode.workspace.getConfiguration().get<IConfig>("tmLanguage")
 
             if(cfg.replaceExistingFile){
-                this.createFileReplacingExisting(parsedFilePath, extension, sourceLanguage, destinationLanguage, documentText);
+                return this.createFileReplacingExisting(parsedFilePath, extension, sourceLanguage, destinationLanguage, documentText);
             }else{
-                this.createFileWithUniqueName(parsedFilePath, extension, sourceLanguage, destinationLanguage, documentText)
+                return this.createFileWithUniqueName(parsedFilePath, extension, sourceLanguage, destinationLanguage, documentText)
             }
 
         } catch(err) {
@@ -94,21 +94,25 @@ export class FileConverter{
         }
     }
 
-    private createFileReplacingExisting(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string) : void
+    private createFileReplacingExisting(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, 
+        destinationLanguage: string, documentText: string) : Thenable<boolean>
     {
         const newFilePath: string = path.join(parsedFilePath.dir, "./" + parsedFilePath.name + "." + extension);
-        this.ifExists(newFilePath).then((existed: boolean) => {
-            this.openEditor(sourceLanguage, destinationLanguage, documentText, newFilePath, existed);
+        return this.ifExists(newFilePath)
+        .then((existed: boolean) => {
+            return this.openEditor(sourceLanguage, destinationLanguage, documentText, newFilePath, existed);
         }, (reason: any) => {
             reason = reason || "Error writing output file";
             console.log("Error writing output", reason);
             vscode.window.showErrorMessage(reason.toString());
+            return Promise.resolve(false);
         });
     }
 
-    private createFileWithUniqueName(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string) : void{
+    private createFileWithUniqueName(parsedFilePath: path.ParsedPath, extension: string, sourceLanguage: SupportedLanguage, 
+        destinationLanguage: string, documentText: string) : Thenable<boolean>{
         // check to see if file already exists
-        vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC")
+        return vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC")
         .then(matchingFiles => {
             var paths = matchingFiles.map(p => p.fsPath);
 
@@ -124,7 +128,7 @@ export class FileConverter{
                 }
             }
 
-            this.openEditor(sourceLanguage, destinationLanguage, documentText, newFilePath, false);
+            return this.openEditor(sourceLanguage, destinationLanguage, documentText, newFilePath, false);
         });;
     }
 
@@ -138,7 +142,7 @@ export class FileConverter{
                 reject(err);
             }
         });
-}
+    }
 
 private parse(sourceLanguage: SupportedLanguage, documentText: string): any {
     switch (sourceLanguage) {
@@ -180,39 +184,50 @@ private uriFor(filePath: string, existing: boolean): vscode.Uri {
     return vscode.Uri.parse("untitled:" + filePath);
 }
 
-private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string, documentText: string, path: string, exists: boolean){
+private DoEditStuff(edit: vscode.TextEditorEdit, editor: vscode.TextEditor, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string,
+    exists: boolean, textDoc: vscode.TextDocument) : void{
+    var parsed: string;                      
+
+    parsed = this.parse(sourceLanguage, documentText);
+
+    if (!parsed){
+        // Display a message?
+        console.log("Could not parse source");
+        //return Promise.reject("Could not parse source");
+    }
+    const destLanguage: SupportedLanguage = destinationLanguage as SupportedLanguage;
+    var built = this.build(destLanguage, parsed);
+
+    if (exists) {
+        const was: vscode.Selection = editor.selection;
+        const lastLineRange: vscode.Range = textDoc.lineAt(textDoc.lineCount - 1).range;
+        const beginning: vscode.Position = new vscode.Position(0, 0);
+        const end: vscode.Position = new vscode.Position(textDoc.lineCount - 1, lastLineRange.end.character);
+        const entire: vscode.Range = new vscode.Range(beginning, end);
+        edit.replace(entire, built);
+        editor.selection = was;
+    } else {
+        edit.insert(new vscode.Position(0, 0), built);
+    }
+    //return Promise.resolve(true);
+}
+
+private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string, documentText: string, path: string, exists: boolean)
+    : Thenable<boolean>
+{
     const uri: vscode.Uri = this.uriFor(path, exists);
+    var textDoc : vscode.TextDocument;
+    var docEditor : vscode.TextEditor;
 
     return vscode.workspace.openTextDocument(uri)
-    .then((doc: vscode.TextDocument) => {
+        .then((doc: vscode.TextDocument) => {
+            textDoc = doc;
             return vscode.window.showTextDocument(doc)
-            .then((editor: vscode.TextEditor) => {
-                return editor.edit((edit: vscode.TextEditorEdit) => {
-                    var parsed: string;                      
-
-                    parsed = this.parse(sourceLanguage, documentText);
-
-                    if (!parsed){
-                        // Display a message?
-                        console.log("Could not parse source");
-                        return;
-                    }
-                    const destLanguage: SupportedLanguage = destinationLanguage as SupportedLanguage;
-                    var built = this.build(destLanguage, parsed);
-
-                    if (exists) {
-                        const was: vscode.Selection = editor.selection;
-                        const lastLineRange: vscode.Range = doc.lineAt(doc.lineCount - 1).range;
-                        const beginning: vscode.Position = new vscode.Position(0, 0);
-                        const end: vscode.Position = new vscode.Position(doc.lineCount - 1, lastLineRange.end.character);
-                        const entire: vscode.Range = new vscode.Range(beginning, end);
-                        edit.replace(entire, built);
-                        editor.selection = was;
-                    } else {
-                        edit.insert(new vscode.Position(0, 0), built);
-                    }
-
-                });
+        })
+        .then((editor: vscode.TextEditor) => {
+            docEditor = editor;
+            return editor.edit((edit: vscode.TextEditorEdit) => {
+                this.DoEditStuff(edit, editor, sourceLanguage, destinationLanguage, documentText, exists, textDoc);
             });
         },
         (reason: any) => {
@@ -220,5 +235,5 @@ private openEditor(sourceLanguage: SupportedLanguage, destinationLanguage:string
             console.log("Error opening editor for file", reason);
             vscode.window.showErrorMessage(reason.toString());
         });
-    }
+    }   
 }

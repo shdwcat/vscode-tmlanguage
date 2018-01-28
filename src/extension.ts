@@ -13,23 +13,23 @@ export function activate(context: vscode.ExtensionContext) {
 
         const fileConverter: FileConverter = new FileConverter();
 
-        const convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', () => {
-            fileConverter.convertFileToJsonTml();
+        const convertToJsonCommand = vscode.commands.registerCommand('extension.convertToJsonTml', async () => {
+            await fileConverter.convertFileToJsonTml();
         });
         context.subscriptions.push(convertToJsonCommand);
         
-        const convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', () => {
-            fileConverter.convertFileToYamlTml();
+        const convertToYamlCommand = vscode.commands.registerCommand('extension.convertToYamlTml', async () => {
+            await fileConverter.convertFileToYamlTml();
         });
         context.subscriptions.push(convertToYamlCommand);
         
-        const convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', () => {
-            fileConverter.convertFileToTml();
+        const convertToTmlCommand = vscode.commands.registerCommand('extension.convertToTml', async () => {
+            await fileConverter.convertFileToTml();
         });
         context.subscriptions.push(convertToTmlCommand);
         
-        const convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', () => {
-            fileConverter.convertFileToAuto();
+        const convertToAutoCommand = vscode.commands.registerCommand('extension.convertTo', async () => {
+            await fileConverter.convertFileToAuto();
         });
         context.subscriptions.push(convertToAutoCommand);
         context.subscriptions.push(fileConverter);
