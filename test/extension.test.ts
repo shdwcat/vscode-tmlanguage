@@ -32,7 +32,11 @@ suite("File conversion tests Tests", () => {
 		assert.equal(true, success);
 
 		console.log("Expected file: " + jsonResultFile);
-		workspace.textDocuments.forEach((doc) => { if (doc.fileName == jsonResultFile) { console.log(doc.getText());} });
+		workspace.textDocuments.forEach((doc) => { 
+			if (doc.fileName == jsonResultFile) 
+			{ console.log(doc.getText());} 
+			else { console.log("No match for " + doc.fileName);
+		} });
 
 
 		// console.log(workspace.textDocuments[0].fileName);
