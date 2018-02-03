@@ -45,7 +45,7 @@ suite("File conversion tests Tests", () => {
 		var success : boolean = await fileConverter.convertFileToTml();
 		assert.equal(true, success);
 
-		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName.indexOf("yaml.tmLanguage") != -1});
+		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName.indexOf("yamltest.tmLanguage") != -1});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
 		assert.notEqual(text, "");
