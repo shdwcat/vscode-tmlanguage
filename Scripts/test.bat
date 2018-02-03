@@ -6,10 +6,10 @@ set ELECTRON_RUN_AS_NODE=
 pushd %~dp0\..
 
 :: Get Code.exe location
-for /f "tokens=2 delims=:," %%a in ('findstr /R /C:"\"nameShort\":.*" product.json') do set NAMESHORT=%%~a
-set NAMESHORT=%NAMESHORT: "=%
-set NAMESHORT=%NAMESHORT:"=%.exe
-set CODE=".build\electron\%NAMESHORT%"
+::for /f "tokens=2 delims=:," %%a in ('findstr /R /C:"\"nameShort\":.*" product.json') do set NAMESHORT=%%~a
+::set NAMESHORT=%NAMESHORT: "=%
+::set NAMESHORT=%NAMESHORT:"=%.exe
+set CODE=".build\electron\code.exe"
 
 :: Download Electron if needed
 node build\lib\electron.js
