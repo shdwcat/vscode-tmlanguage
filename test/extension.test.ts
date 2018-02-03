@@ -34,6 +34,8 @@ suite("File conversion tests Tests", () => {
 		console.log("Open files:");
 		workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
 
+		let test = workspace.textDocuments[1].fileName;
+		console.log(test);
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
@@ -49,6 +51,7 @@ suite("File conversion tests Tests", () => {
 		assert.equal(true, success);
 
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == yamlResultFile;});
+		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
 		assert.notEqual(text, "");
 	});
