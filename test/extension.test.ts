@@ -33,7 +33,7 @@ suite("File conversion tests Tests", () => {
 
 		console.log("Expected file: " + jsonResultFile);
 		workspace.textDocuments.forEach((doc) => { 
-			if (doc.fileName == jsonResultFile) 
+			if (doc.fileName.indexOf("jsontest.tmLanguage") != -1) 
 			{ console.log(doc.getText());} 
 			else { console.log("No match for " + doc.fileName);
 		} });
@@ -43,7 +43,7 @@ suite("File conversion tests Tests", () => {
 		// console.log(workspace.textDocuments[1].fileName);
 		// console.log(workspace.textDocuments[2].fileName);
 
-		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
+		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName.indexOf("jsontest.tmLanguage") != -1});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
 		assert.notEqual(text, "");
