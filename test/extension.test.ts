@@ -34,8 +34,11 @@ suite("File conversion tests Tests", () => {
 		console.log("Expected file: " + jsonResultFile);
 		//workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
 
-		let test = workspace.textDocuments[1].fileName;
-		console.log(test);
+
+		console.log(workspace.textDocuments[0].fileName);
+		console.log(workspace.textDocuments[1].fileName);
+		console.log(workspace.textDocuments[2].fileName);
+
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
