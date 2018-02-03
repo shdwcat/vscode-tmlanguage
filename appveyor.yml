@@ -9,15 +9,18 @@ install:
   # install modules
   - npm install
   - npm run vscode:prepublish
+  
 
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
+  - node ./node_modules/vscode/bin/test
+  - npm test
   # run tests
   #- npm test
-  - .\scripts\test.bat
+  #- .\scripts\test.bat
 
 # Don't actually build.
 build: off
