@@ -38,7 +38,7 @@ suite("File conversion tests Tests", () => {
 	});
 
 	test('Convert from yaml to tmLanguage', async function() {
-		const textDocument = await workspace.openTextDocument(jsonTestFile);
+		const textDocument = await workspace.openTextDocument(yamlTestFile);
 		const textEditor = await window.showTextDocument(textDocument);
 
 		const fileConverter: FileConverter = new FileConverter();
