@@ -32,12 +32,12 @@ suite("File conversion tests Tests", () => {
 		assert.equal(true, success);
 
 		console.log("Expected file: " + jsonResultFile);
-		//workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
+		workspace.textDocuments.forEach((doc) => { if (doc.fileName == jsonResultFile) { console.log(doc.getText());} });
 
 
-		console.log(workspace.textDocuments[0].fileName);
-		console.log(workspace.textDocuments[1].fileName);
-		console.log(workspace.textDocuments[2].fileName);
+		// console.log(workspace.textDocuments[0].fileName);
+		// console.log(workspace.textDocuments[1].fileName);
+		// console.log(workspace.textDocuments[2].fileName);
 
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
 		assert.notEqual(resultDoc, undefined);
