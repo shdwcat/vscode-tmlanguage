@@ -31,7 +31,11 @@ suite("File conversion tests Tests", () => {
 		var success : boolean = await fileConverter.convertFileToTml();
 		assert.equal(true, success);
 
+		console.log("Open files:");
+		workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
+
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
+		assert.notEqual(resultDoc, null);
 		var text = resultDoc.getText();
 		assert.notEqual(text, "");
 	});
