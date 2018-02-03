@@ -31,18 +31,6 @@ suite("File conversion tests Tests", () => {
 		var success : boolean = await fileConverter.convertFileToTml();
 		assert.equal(true, success);
 
-		console.log("Expected file: " + jsonResultFile);
-		workspace.textDocuments.forEach((doc) => { 
-			if (doc.fileName.indexOf("jsontest.tmLanguage") != -1) 
-			{ console.log(doc.getText());} 
-			else { console.log("No match for " + doc.fileName);
-		} });
-
-
-		// console.log(workspace.textDocuments[0].fileName);
-		// console.log(workspace.textDocuments[1].fileName);
-		// console.log(workspace.textDocuments[2].fileName);
-
 		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName.indexOf("jsontest.tmLanguage") != -1});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
@@ -57,7 +45,7 @@ suite("File conversion tests Tests", () => {
 		var success : boolean = await fileConverter.convertFileToTml();
 		assert.equal(true, success);
 
-		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == yamlResultFile;});
+		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName.indexOf("yaml.tmLanguage") != -1});
 		assert.notEqual(resultDoc, undefined);
 		var text = resultDoc.getText();
 		assert.notEqual(text, "");
