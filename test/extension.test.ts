@@ -31,8 +31,8 @@ suite("File conversion tests Tests", () => {
 		var success : boolean = await fileConverter.convertFileToTml();
 		assert.equal(true, success);
 
-		console.log("Open files:");
-		workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
+		console.log("Expected file: " + jsonResultFile);
+		//workspace.textDocuments.forEach((doc) => { console.log( doc.fileName); });
 
 		let test = workspace.textDocuments[1].fileName;
 		console.log(test);
