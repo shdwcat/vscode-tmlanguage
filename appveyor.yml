@@ -23,7 +23,7 @@ test_script:
   - node ./node_modules/vscode/bin/test
 
 artifacts:
-  - path: *.vsix
+  - path: '*.vsix'
     name: tmLanguage Extension
 
 # Don't actually build.
