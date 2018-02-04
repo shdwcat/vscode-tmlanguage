@@ -9,7 +9,7 @@ install:
   # install modules
   - npm install -g vsce
   - npm install
-  - npm version --no-git-tag-version "{version}"
+  - npm version --no-git-tag-version $env:APPVEYOR_BUILD_NUMBER
   - npm run vscode:prepublish
 
 build_script:
