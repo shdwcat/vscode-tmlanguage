@@ -23,4 +23,4 @@ test_script:
   #- .\scripts\test.bat
 
 # Don't actually build.
-build: off
+#build: off
