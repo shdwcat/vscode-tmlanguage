@@ -7,9 +7,12 @@ install:
   # Get the latest stable version of Node.js or io.js
   - ps: Install-Product node $env:nodejs_version
   # install modules
+  - npm install -g vsce
   - npm install
   - npm run vscode:prepublish
-  
+
+build_script:
+  - vsce package
 
 # Post-install test scripts.
 test_script:
@@ -17,10 +20,6 @@ test_script:
   - node --version
   - npm --version
   - node ./node_modules/vscode/bin/test
-  - npm test
-  # run tests
-  #- npm test
-  #- .\scripts\test.bat
 
 # Don't actually build.
 #build: off
