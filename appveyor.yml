@@ -9,6 +9,7 @@ install:
   # install modules
   - npm install -g vsce
   - npm install
+  - npm version --no-git-tag-version %APPVEYOR_BUILD_VERSION%
   - npm run vscode:prepublish
 
 build_script:
@@ -20,6 +21,10 @@ test_script:
   - node --version
   - npm --version
   - node ./node_modules/vscode/bin/test
+
+artifacts:
+  - path: *.vsix
+    name: tmLanguage Extension
 
 # Don't actually build.
 #build: off
