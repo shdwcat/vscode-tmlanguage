@@ -2,7 +2,7 @@
   "name": "tmlanguage",
   "displayName": "TextMate Languages",
   "description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
-  "version": "0.10.0",
+  "version": "0.9.0",
   "publisher": "Togusa09",
   "license": "MIT",
   "engines": {
