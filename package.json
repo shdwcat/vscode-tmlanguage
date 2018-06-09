@@ -2,7 +2,7 @@
   "name": "tmlanguage",
   "displayName": "TextMate Languages",
   "description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
-  "version": "0.8.5",
+  "version": "0.10.0",
   "publisher": "Togusa09",
   "license": "MIT",
   "engines": {
@@ -135,14 +135,14 @@
   "dependencies": {
     "format-json": "^1.0.3",
     "jison": "^0.4.18",
-    "plist": "^1.2.0",
+    "plist": "^3.0.1",
     "yamljs": "^0.2.10"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.46",
     "@types/node": "^6.0.96",
-    "mocha": "^2.5.3",
+    "mocha": "^5.2.0",
     "typescript": "^2.6.2",
-    "vscode": "^1.1.10"
+    "vscode": "^1.1.18"
   }
 }
