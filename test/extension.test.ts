@@ -14,10 +14,8 @@ import { TextDocument, workspace, window, extensions, commands } from 'vscode'
 const formatFilesPath = path.join(__dirname, '..', '..', 'test', 'testfiles')
 
 const jsonTestFile = path.join(formatFilesPath, 'jsontest.JSON-tmLanguage')
-const jsonResultFile = path.join(formatFilesPath, 'jsontest.tmLanguage')
 
 const yamlTestFile = path.join(formatFilesPath, 'yamltest.YAML-tmLanguage')
-const yamlResultFile = path.join(formatFilesPath, 'yamltest.tmLanguage')
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite('File conversion tests', function () {
@@ -32,8 +30,8 @@ suite('File conversion tests', function () {
     const fileConverter = new FileConverter()
     var success = await fileConverter.convertFileToTml()
     assert.strictEqual(true, success)
-
-    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === jsonResultFile })
+    const result = path.join(path.dirname(textDocument.fileName), 'jsontest.tmLanguage')
+    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === result })
     var text = resultDoc?.getText() ?? ''
     assert.notStrictEqual(text, '')
   })
@@ -44,8 +42,8 @@ suite('File conversion tests', function () {
     const fileConverter = new FileConverter()
     var success = await fileConverter.convertFileToTml()
     assert.strictEqual(true, success)
-
-    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === yamlResultFile })
+    const result = path.join(path.dirname(textDocument.fileName), 'yamltest.tmLanguage')
+    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === result })
     var text = resultDoc?.getText() ?? ''
     await commands.executeCommand('workbench.action.closeActiveEditor')
     assert.notStrictEqual(text, '')
