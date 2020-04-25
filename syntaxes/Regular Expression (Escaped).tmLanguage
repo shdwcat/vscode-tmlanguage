@@ -171,10 +171,15 @@
           </dict>
         </dict>
         <key>end</key>
-        <string>]</string>
+        <string>(-)?(\])</string>
         <key>endCaptures</key>
         <dict>
-          <key>0</key>
+          <key>1</key>
+          <dict>
+            <key>name</key>
+            <string>string.set.element.escapedregexp</string>
+          </dict>
+          <key>2</key>
           <dict>
             <key>name</key>
             <string>keyword.other.set.escapedregexp</string>

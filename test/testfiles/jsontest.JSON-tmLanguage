@@ -209,7 +209,7 @@
         "endCaptures": {
             "1": { "name": "punctuation.definition.regex.end.json-tmlanguage" }
         }
-      },
+      }
   },
 
   "uuid": "8c7e3a99-1780-4b72-9ce5-585949c0563e"
