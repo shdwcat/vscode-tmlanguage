@@ -193,7 +193,23 @@
             "name": "comment.block.json-tmlanguage"
           }
         ]
-      }
+      },
+      
+      "testSingleQuot": {
+        "begin": "(['])",
+        "end": "(['])",
+        "name": "meta.definition.error.data.json-tmlanguage",
+        "patterns": [
+            { "include": "source.escapedregexp" }
+        ],
+        "beginCaptures": {
+            "1": { "name": "keyword.other.control.json-tmlanguage"},
+            "2": { "name": "punctuation.definition.regex.start.json-tmlanguage" }
+        },
+        "endCaptures": {
+            "1": { "name": "punctuation.definition.regex.end.json-tmlanguage" }
+        }
+      },
   },
 
   "uuid": "8c7e3a99-1780-4b72-9ce5-585949c0563e"
