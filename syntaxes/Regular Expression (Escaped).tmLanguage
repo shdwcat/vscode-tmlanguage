@@ -151,7 +151,7 @@
       <key>sets</key>
       <dict>
         <key>begin</key>
-        <string>(\[)(\^)?(\])?</string>
+        <string>(\[)(\^)?([-\]])?</string>
         <key>beginCaptures</key>
         <dict>
           <key>1</key>
@@ -195,6 +195,20 @@
                 <string>keyword.operator.other.set.range.separator.escapedregexp</string>
               </dict>
             </dict>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>[A-Za-z0-9](-)[A-Za-z0-9]</string>
+            <key>name</key>
+            <string>support.function.set.range.escapedregexp</string>
+          </dict>
+          <dict>
+            <key>match</key>
+            <string>(?:[._&apos;;+` \{\(\}\)]|[\\]{2}[tnr]|(?&lt;![\\])[\\]{4}|[a-zA-Z0-9]+)</string>
+            <key>name</key>
+            <string>string.set.element.escapedregexp</string>
+            <key>comment</key>
+            <string>Catch all fallback for problem characters inside sets. Ideally should be built based on a regex reference and split into appropriate classes, until then keep stuffing edge cases here.</string>
           </dict>
           <dict>
             <key>include</key>
