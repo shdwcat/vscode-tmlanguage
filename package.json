@@ -2,11 +2,11 @@
   "name": "tmlanguage",
   "displayName": "TextMate Languages",
   "description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
-  "version": "0.9.0",
+  "version": "0.9.5",
   "publisher": "Togusa09",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.24.0"
+    "vscode": "^1.55.0"
   },
   "repository": {
     "type": "git",
@@ -130,19 +130,25 @@
   "scripts": {
     "vscode:prepublish": "tsc -p ./",
     "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install"
+    "pretest": "tsc -p ./",
+    "test": "ts-standard && node --trace-deprecation ./out/test/runTest.js"
   },
   "dependencies": {
     "format-json": "^1.0.3",
-    "jison": "^0.4.18",
+    "jisons": "^1.0",
     "plist": "^3.0.1",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.1",
-    "@types/node": "^6.0.112",
-    "mocha": "^5.2.0",
-    "typescript": "^2.9.1",
-    "vscode": "^1.1.29"
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^12.20.12",
+    "@types/plist": "^3.0.2",
+    "@types/vscode": "^1.55.0",
+    "@types/yamljs": "^0.2.31",
+    "glob": "^7.1.6",
+    "mocha": "^8.3.2",
+    "ts-standard": "^10.0.0",
+    "typescript": "^4.2.4",
+    "vscode-test": "^1.5.2"
   }
 }
