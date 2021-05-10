@@ -1,51 +1,53 @@
-// 
+//
 // Note: This example test is leveraging the Mocha test framework.
 // Please refer to their documentation on https://mochajs.org/ for help.
 //
 
 // The module 'assert' provides assertion methods from node
-import * as assert from 'assert';
+import * as assert from 'assert'
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
-import * as myExtension from '../src/extension';
-import { FileConverter } from '../src/fileConverter';
-import * as path from 'path';
-import { TextDocument, workspace, window} from 'vscode';
+import { FileConverter } from '../src/fileConverter'
+import * as path from 'path'
+import { TextDocument, workspace, window, extensions, commands } from 'vscode'
+const formatFilesPath = path.join(__dirname, '..', '..', 'test', 'testfiles')
 
-const formatFilesPath = path.join(__dirname, '..', '..', 'test', 'testfiles');
+const jsonTestFile = path.join(formatFilesPath, 'jsontest.JSON-tmLanguage')
+const jsonResultFile = path.join(formatFilesPath, 'jsontest.tmLanguage')
 
-const jsonTestFile = path.join(formatFilesPath, 'jsontest.JSON-tmLanguage');
-const jsonResultFile = path.join(formatFilesPath, 'jsontest.tmLanguage');
-
-const yamlTestFile = path.join(formatFilesPath, 'yamltest.YAML-tmLanguage');
-const yamlResultFile = path.join(formatFilesPath, 'yamltest.tmLanguage');
+const yamlTestFile = path.join(formatFilesPath, 'yamltest.YAML-tmLanguage')
+const yamlResultFile = path.join(formatFilesPath, 'yamltest.tmLanguage')
 
 // Defines a Mocha test suite to group tests of similar kind together
-suite("File conversion tests Tests", () => {
-	test('Convert from json to tmLanguage', async function() {
-		const textDocument = await workspace.openTextDocument(jsonTestFile);
-		const textEditor = await window.showTextDocument(textDocument);
+suite('File conversion tests', function () {
+  setup(async function () {
+    // Just make sure the extension is loaded before we do anything
+    const extension = extensions.getExtension('Togusa09.tmlanguage')
+    console.log(`Extension loaded: ${extension?.id ?? 'NONE'}`)
+  })
+  test('Convert from json to tmLanguage', async function () {
+    const textDocument = await workspace.openTextDocument(jsonTestFile)
+    await window.showTextDocument(textDocument)
+    const fileConverter = new FileConverter()
+    var success = await fileConverter.convertFileToTml()
+    assert.strictEqual(true, success)
 
-		const fileConverter: FileConverter = new FileConverter();
-		var success : boolean = await fileConverter.convertFileToTml();
-		assert.equal(true, success);
+    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === jsonResultFile })
+    var text = resultDoc?.getText() ?? ''
+    assert.notStrictEqual(text, '')
+  })
 
-		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
-		var text = resultDoc.getText();
-		assert.notEqual(text, "");
-	});
+  test('Convert from yaml to tmLanguage', async function () {
+    const textDocument = await workspace.openTextDocument(yamlTestFile)
+    await window.showTextDocument(textDocument)
+    const fileConverter = new FileConverter()
+    var success = await fileConverter.convertFileToTml()
+    assert.strictEqual(true, success)
 
-	test('Convert from yaml to tmLanguage', async function() {
-		const textDocument = await workspace.openTextDocument(jsonTestFile);
-		const textEditor = await window.showTextDocument(textDocument);
-
-		const fileConverter: FileConverter = new FileConverter();
-		var success : boolean = await fileConverter.convertFileToTml();
-		assert.equal(true, success);
-
-		let resultDoc = workspace.textDocuments.find((doc : TextDocument) => { return doc.fileName == jsonResultFile;});
-		var text = resultDoc.getText();
-		assert.notEqual(text, "");
-	});
-});
+    const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === yamlResultFile })
+    var text = resultDoc?.getText() ?? ''
+    await commands.executeCommand('workbench.action.closeActiveEditor')
+    assert.notStrictEqual(text, '')
+  })
+})
