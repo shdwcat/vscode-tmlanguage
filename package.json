@@ -141,7 +141,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",
-    "@types/node": "^12.20.12",
+    "@types/node": "^14.14.44",
     "@types/plist": "^3.0.2",
     "@types/vscode": "^1.55.0",
     "@types/yamljs": "^0.2.31",
