@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 
 import * as plist from 'plist'
-import * as YAML from 'yamljs'
+import * as YAML from 'yaml'
 
 import { SupportedLanguage } from './languages'
 
@@ -139,7 +139,7 @@ export class FileConverter {
         return JSON.stringify(parsed, null, 2)
       case 'yaml':
       case 'yaml-tmlanguage':
-        return YAML.stringify(parsed, 6)
+        return YAML.stringify(parsed, { indent: 6 })
       default:
         return undefined
     }
