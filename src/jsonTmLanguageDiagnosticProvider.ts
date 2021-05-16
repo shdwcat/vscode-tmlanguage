@@ -2,9 +2,9 @@ import * as vscode from 'vscode'
 import JsonTmLanguageAnalyser from './jsonTmLanguageAnalyser'
 
 export default class jsonTmLanguageDiagnosticProvider {
+  private readonly uuidErrors = vscode.languages.createDiagnosticCollection('languageErrors')
   public CreateDiagnostics (document: vscode.TextDocument): void {
     const diagnostics: vscode.Diagnostic[] = []
-    const uuidErrors = vscode.languages.createDiagnosticCollection('languageErrors')
 
     const analyser = new JsonTmLanguageAnalyser()
 
@@ -48,7 +48,7 @@ export default class jsonTmLanguageDiagnosticProvider {
       }
     }
 
-    uuidErrors.set(document.uri, diagnostics)
+    this.uuidErrors.set(document.uri, diagnostics)
   }
 
   private searchElements (element: any, matchingTitle: string): any[] {
