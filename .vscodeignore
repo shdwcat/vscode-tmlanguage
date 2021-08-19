@@ -1,6 +1,6 @@
 .vscode/**
 typings/**
-out/test/**
+out/**
 test/**
 src/**
 **/*.map
@@ -9,5 +9,6 @@ tsconfig.json
 vsc-extension-quickstart.md
 *.vsix
 **/*.js.map
+node_modules
 
 
