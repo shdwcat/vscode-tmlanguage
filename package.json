@@ -3,17 +3,17 @@
   "displayName": "TextMate Languages",
   "description": "Syntax highlighter and snippets for JSON/YAML derivitives of TextMate language definition",
   "version": "0.9.5",
-  "publisher": "Togusa09",
+  "publisher": "pedro-w",
   "license": "MIT",
   "engines": {
     "vscode": "^1.55.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Togusa09/vscode-tmlanguage/"
+    "url": "https://github.com/pedro-w/vscode-tmlanguage/"
   },
   "bugs": {
-    "url": "https://github.com/Togusa09/vscode-tmlanguage/issues"
+    "url": "https://github.com/pedro-w/vscode-tmlanguage/issues"
   },
   "icon": "images/plist_icon.png",
   "categories": [
