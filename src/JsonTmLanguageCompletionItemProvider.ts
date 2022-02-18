@@ -6,14 +6,14 @@ export default class JsonTmLanguageCompletionItemProvider implements vscode.Comp
   public provideCompletionItems (document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.CompletionItem[]> {
     return new Promise<vscode.CompletionItem[]>((resolve, reject) => {
       try {
-        var analyser = new JsonTmLanguageAnalyser()
+        const analyser = new JsonTmLanguageAnalyser(document)
 
-        analyser.getAnalysis(document)
-        var sectionNames = analyser.getSectionNames()
+        analyser.getAnalysis()
+        const sectionNames = analyser.getSectionNames()
 
-        var completion: vscode.CompletionItem[] = []
-        for (var section of sectionNames) {
-          var t3 = new vscode.CompletionItem(section)
+        const completion: vscode.CompletionItem[] = []
+        for (const section of sectionNames) {
+          const t3 = new vscode.CompletionItem(section)
           t3.kind = vscode.CompletionItemKind.Keyword
           t3.insertText = section
           completion.push(t3)

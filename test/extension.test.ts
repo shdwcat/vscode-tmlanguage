@@ -28,11 +28,11 @@ suite('File conversion tests', function () {
     const textDocument = await workspace.openTextDocument(jsonTestFile)
     await window.showTextDocument(textDocument)
     const fileConverter = new FileConverter()
-    var success = await fileConverter.convertFileToTml()
+    const success = await fileConverter.convertFileToTml()
     assert.strictEqual(true, success)
     const result = path.join(path.dirname(textDocument.fileName), 'jsontest.tmLanguage')
     const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === result })
-    var text = resultDoc?.getText() ?? ''
+    const text = resultDoc?.getText() ?? ''
     assert.notStrictEqual(text, '')
   })
 
@@ -40,11 +40,11 @@ suite('File conversion tests', function () {
     const textDocument = await workspace.openTextDocument(yamlTestFile)
     await window.showTextDocument(textDocument)
     const fileConverter = new FileConverter()
-    var success = await fileConverter.convertFileToTml()
+    const success = await fileConverter.convertFileToTml()
     assert.strictEqual(true, success)
     const result = path.join(path.dirname(textDocument.fileName), 'yamltest.tmLanguage')
     const resultDoc = workspace.textDocuments.find((doc: TextDocument) => { return doc.fileName === result })
-    var text = resultDoc?.getText() ?? ''
+    const text = resultDoc?.getText() ?? ''
     await commands.executeCommand('workbench.action.closeActiveEditor')
     assert.notStrictEqual(text, '')
   })
