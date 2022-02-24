@@ -21,7 +21,7 @@ const yamlTestFile = path.join(formatFilesPath, 'yamltest.YAML-tmLanguage')
 suite('File conversion tests', function () {
   setup(async function () {
     // Just make sure the extension is loaded before we do anything
-    const extension = extensions.getExtension('Togusa09.tmlanguage')
+    const extension = extensions.getExtension('pedro-w.tmlanguage')
     console.log(`Extension loaded: ${extension?.id ?? 'NONE'}`)
   })
   test('Convert from json to tmLanguage', async function () {
