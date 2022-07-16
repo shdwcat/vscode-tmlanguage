@@ -141,7 +141,7 @@ export class FileConverter {
       case 'yaml':
       case 'yaml-tmlanguage':
         const yamlIndent = vscode.workspace
-          .getConfiguration("editor", { languageId: 'yaml' })
+          .getConfiguration("editor", { languageId: 'yaml-tmlanguage' })
           .get<number>('tabSize')
         return YAML.stringify(parsed, { indent: yamlIndent })
       default:
