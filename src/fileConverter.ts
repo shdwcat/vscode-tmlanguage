@@ -150,11 +150,10 @@ export class FileConverter {
   }
 
   private uriFor (filePath: string, existing: boolean): vscode.Uri {
-    if (existing) {
-      return vscode.Uri.file(filePath)
-    } else {
-      return vscode.Uri.parse('untitled:' + filePath)
+    if (!existing) {
+      fs.writeFileSync(filePath, '')
     }
+    return vscode.Uri.file(filePath)
   }
 
   private DoEditStuff (edit: vscode.TextEditorEdit, editor: vscode.TextEditor, sourceLanguage: SupportedLanguage, destinationLanguage: string, documentText: string,
