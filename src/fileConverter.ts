@@ -38,7 +38,8 @@ export class FileConverter {
       case 'json-tmlanguage':
         return 'tmLanguage.json'
       case 'yaml-tmlanguage':
-        return 'tmLanguage.yml'
+        const yamlExtension = vscode.workspace.getConfiguration('tmLanguage').get<string>('yamlExtension')
+        return 'tmLanguage.' + yamlExtension
       case 'tmlanguage':
         return 'tmLanguage'
       default:

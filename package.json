@@ -45,6 +45,11 @@
           "type": "boolean",
           "default": true,
           "description": "Whether the the conversion should overwrite existing files or create a new one"
+        },
+        "tmLanguage.yamlExtension": {
+          "type": "string",
+          "default": "yml",
+          "description": "The file extension to use when converting to YAML tmLanguage"
         }
       }
     },
